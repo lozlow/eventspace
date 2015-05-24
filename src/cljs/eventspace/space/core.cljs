@@ -1,25 +1,40 @@
 (ns eventspace.space.core
   (:require-macros [reagent.ratom :refer [reaction]])
-  (:require [re-frame.core :refer [subscribe dispatch]]))
-
-(defmulti feed-item :type)
-
-(defmethod feed-item :message
-  [{:keys [author content date]}]
-  [:article.FeedItem.FeedItem--message
-    [:img.FeedItem__profile-image {:src "/img/profile.jpg"}]
-    [:span.FeedItem__date date]
-    [:span.FeedItem__author author]
-    [:span.FeedItem__author content]])
+  (:require [reagent.core :refer [atom]]
+            [re-frame.core :refer [subscribe dispatch]]
+            [eventspace.space.feed-item :as fi]
+            [eventspace.util :refer [with-focus]]))
 
 (defn feed-panel
   []
   (let [feed-items (subscribe [:feed])]
     (fn []
       [:div.FeedPanel
-        (println @feed-items)
         (for [item @feed-items]
-          ^{:key (:id item)} [feed-item item])])))
+          ^{:key (:id item)} [fi/feed-item item])])))
+
+(defmulti new-post identity)
+
+(defmethod new-post :message
+  [_]
+  [with-focus [:textarea.NewPost__content]])
+
+(defmethod new-post :event
+  [_]
+  [:span "Event"])
+
+(defn create-post
+  []
+  (let [creating (atom nil)]
+    (fn []
+      [:div.NewPost
+        [:button.NewPost__button--message {:on-click #(reset! creating :message)} "+ Message"]
+        [:button.NewPost__button--event {:on-click #(reset! creating :event)} "+ Event"]
+        (when-let [type @creating]
+          [:div.NewPost__details
+            [new-post type]
+            [:button.NewPost__button--cancel {:on-click #(reset! creating nil)} "Cancel"]
+            [:button "Post"]])])))
 
 (defn loading-panel
   []
@@ -29,7 +44,6 @@
 (defn title
   []
   (let [space (subscribe [:selected-space])]
-    (println @space)
     (fn []
       [:h1 (:title @space)])))
 
@@ -38,4 +52,5 @@
   [:div
     ; [loading-panel]
     [title]
+    [create-post]
     [feed-panel]])
