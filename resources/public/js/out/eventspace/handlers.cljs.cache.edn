@@ -1,2 +1,0 @@
-;; Analyzed by ClojureScript 0.0-3269
-{:name eventspace.handlers, :doc nil, :excludes #{}, :use-macros nil, :require-macros nil, :uses {dispatch re-frame.core, register-handler re-frame.core}, :requires {re-frame.core re-frame.core}, :imports nil, :cljs.analyzer/constants {:seen #{:selected-space :select-space}, :order [:select-space :selected-space]}}

@@ -35,6 +35,7 @@
   :uberjar-name "eventspace.jar"
   :jvm-opts ["-server"]
 
+  :source-paths ["src/clj"]
 ;;enable to start the nREPL server when the application launches
 ;:env {:repl-port 7001}
 
