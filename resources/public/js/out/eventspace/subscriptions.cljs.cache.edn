@@ -1,0 +1,2 @@
+;; Analyzed by ClojureScript 0.0-3269
+{:use-macros {reaction reagent.ratom}, :excludes #{}, :name eventspace.subscriptions, :imports nil, :requires {re-frame.core re-frame.core}, :uses {subscribe re-frame.core, register-sub re-frame.core, dispatch re-frame.core}, :require-macros {reagent.ratom reagent.ratom}, :cljs.analyzer/constants {:seen #{:feed :selected-space :feed-items :spaces-list :spaces :id}, :order [:spaces-list :spaces :selected-space :id :feed-items :feed]}, :doc nil}

@@ -1,0 +1,22 @@
+<html>
+  <head>
+      <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <title>Welcome to eventspace</title>
+      {% style "/css/screen.css" %}
+  </head>
+  <body>
+
+    {% include "responsive-layout.html" %}
+
+    <script type="text/javascript">
+        var context = "{{servlet-context}}";
+    </script>
+    {% if dev %}
+      {% script "/js/out/goog/base.js" %}
+      {% script "/js/app.js" %}
+      <script type="text/javascript">goog.require("eventspace.app");</script>
+    {% else %}
+      {% script "/js/app.js" %}
+    {% endif %}
+  </body>
+</html>
