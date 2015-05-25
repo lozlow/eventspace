@@ -28,13 +28,14 @@
   (let [creating (atom nil)]
     (fn []
       [:div.NewPost
-        [:button.NewPost__button--message {:on-click #(reset! creating :message)} "+ Message"]
-        [:button.NewPost__button--event {:on-click #(reset! creating :event)} "+ Event"]
-        (when-let [type @creating]
-          [:div.NewPost__details
-            [new-post type]
-            [:button.NewPost__button--cancel {:on-click #(reset! creating nil)} "Cancel"]
-            [:button "Post"]])])))
+        [:div.NewPost__buttons
+          [:button.NewPost__button {:on-click #(reset! creating :message)} "+ Message"]
+          [:button.NewPost__button {:on-click #(reset! creating :event)} "+ Event"]
+          (when-let [type @creating]
+            [:div.NewPost__details
+              [new-post type]
+              [:button.NewPost__button.NewPost__button--cancel {:on-click #(reset! creating nil)} "Cancel"]
+              [:button.NewPost__button "Post"]])]])))
 
 (defn loading-panel
   []

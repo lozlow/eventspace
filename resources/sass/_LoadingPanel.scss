@@ -1,0 +1,14 @@
+.LoadingPanel {
+  background: $menu-bg;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+  border-radius: 2px;
+  @extend .layer-7;
+}
+
+.LoadingPanel__spinner {
+  margin: 0 auto;
+  display: block;
+  padding-top: 24px;
+}

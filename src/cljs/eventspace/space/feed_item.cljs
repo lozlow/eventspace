@@ -16,11 +16,11 @@
     (fn []
       [:div.FeedItemCommentBox
         (if-not @entering
-          [:button {:on-click #(reset! entering true)} "Comment"]
+          [:button.FeedItemCommentBox__new {:on-click #(reset! entering true)} "Comment"]
           [:div
             [with-focus [:textarea.FeedItemCommentBox__content {:tab-index 1}]]
-            [:button {:on-click #(reset! entering false)} "Cancel"]
-            [:button {:tab-index 2} "Post"]])])))
+            [:button.FeedItemCommentBox__button.FeedItemCommentBox__button--cancel {:on-click #(reset! entering false)} "Cancel"]
+            [:button.FeedItemCommentBox__button {:tab-index 2} "Post"]])])))
 
 (defn feed-item-comment
   [{:keys [author date content] :as comment}]

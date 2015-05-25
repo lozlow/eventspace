@@ -34,6 +34,8 @@
   :min-lein-version "2.0.0"
   :uberjar-name "eventspace.jar"
   :jvm-opts ["-server"]
+  :prep-tasks [["cljx" "once"] "javac" "compile"]
+  :hooks [leiningen.sass]
 
   :source-paths ["src/clj"]
 ;;enable to start the nREPL server when the application launches
@@ -44,7 +46,8 @@
   :plugins [[lein-ring "0.9.1"]
             [lein-environ "1.0.0"]
             [lein-ancient "0.6.5"]
-            [lein-cljsbuild "1.0.5"]]
+            [lein-cljsbuild "1.0.5"]
+            [lein-sass "0.3.0"]]
 
 
 
@@ -53,6 +56,8 @@
          :destroy eventspace.handler/destroy
          :uberwar-name "eventspace.war"}
 
+  :sass {:src "resources/sass"
+         :output-directory "resources/public/css"}
 
   :clean-targets ^{:protect false} ["resources/public/js"]
 

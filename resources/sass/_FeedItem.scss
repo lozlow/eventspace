@@ -1,0 +1,40 @@
+.FeedItem {
+  margin: 14px 0;
+  background: $page-panel-bg;
+  border-radius: 2px;
+  padding: 10px 15px;
+  @extend .layer-2;
+}
+
+.FeedItem__profile-image {
+  width: 64px;
+  margin: 0 10px 8px 0;
+}
+
+.FeedItem__comments {
+  list-style: none;
+}
+
+.NewPost {
+  padding: 10px 15px;
+  background: $page-panel-bg;
+  border-radius: 2px;
+  @extend .layer-1;
+}
+
+.NewPost__content,
+.FeedItemCommentBox__content {
+  width: 100%;
+  border: 1px solid #ccc;
+  background: transparent;
+}
+
+.NewPost__button.NewPost__button {
+  @extend .button;
+  height: 45px;
+}
+
+.FeedItemCommentBox__new,
+.FeedItemCommentBox__button {
+  @extend .button;
+}
