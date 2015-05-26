@@ -20,21 +20,25 @@
   position: relative;
   height: 40px;
   text-align: center;
-  background: #ecf0f1;
-  border: 1px solid #dadedf;
+  background: transparent;
+  border: 1px solid $light-grey;
   border-bottom-width: 2px;
   cursor: pointer;
-  -webkit-box-shadow: inset 0 -2px #dadedf;
-  box-shadow: inset 0 -2px #dadedf;
-}
+  -webkit-box-shadow: inset 0 -2px $light-grey;
+  box-shadow: inset 0 -2px $light-grey;
 
-.button + .button {
-  border-left: 0;
-}
+  &:hover {
+    box-shadow: inset 0 -2px $menu-bg;
+  }
 
-.button:active {
-  top: 1px;
-  outline: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
+  &:active {
+    top: 1px;
+    outline: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+  & + .button {
+      border-left: none;
+  }
 }
