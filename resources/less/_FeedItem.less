@@ -1,9 +1,9 @@
 .FeedItem {
   margin: 14px 0;
-  background: $page-panel-bg;
+  background: @page-panel-bg;
   border-radius: 2px;
   padding: 10px 15px;
-  @extend .layer-2;
+  .layer-2;
 }
 
 .FeedItem__profile-image {
@@ -17,9 +17,9 @@
 
 .NewPost {
   padding: 10px 15px;
-  background: $page-panel-bg;
+  background: @page-panel-bg;
   border-radius: 2px;
-  @extend .layer-1;
+  .layer-1;
 }
 
 .NewPost__content,
@@ -30,11 +30,11 @@
 }
 
 .NewPost__button.NewPost__button {
-  @extend .button;
+  .button;
   height: 45px;
 }
 
 .FeedItemCommentBox__new,
 .FeedItemCommentBox__button {
-  @extend .button;
+  .button;
 }

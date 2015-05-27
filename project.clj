@@ -35,7 +35,7 @@
   :uberjar-name "eventspace.jar"
   :jvm-opts ["-server"]
   :prep-tasks [["cljx" "once"] "javac" "compile"]
-  :hooks [leiningen.sass]
+  :hooks [leiningen.less]
 
   :source-paths ["src/clj"]
 ;;enable to start the nREPL server when the application launches
@@ -47,7 +47,7 @@
             [lein-environ "1.0.0"]
             [lein-ancient "0.6.5"]
             [lein-cljsbuild "1.0.5"]
-            [lein-sass "0.3.0"]]
+            [lein-less "1.7.5"]]
 
 
 
@@ -56,10 +56,17 @@
          :destroy eventspace.handler/destroy
          :uberwar-name "eventspace.war"}
 
-  :sass {:src "resources/sass"
-         :output-directory "resources/public/css"}
+  :less {:source-paths ["resources/less"]
+         :target-path "resources/public/css"}
 
   :clean-targets ^{:protect false} ["resources/public/js"]
+
+  :cljx {:builds [{:source-paths ["src/cljx"]
+                   :output-path "target/generated/src/clj"
+                   :rules :clj}
+                  {:source-paths ["src/cljx"]
+                   :output-path "target/generated/src/cljs"
+                   :rules :cljs}]}
 
   :cljsbuild
   {:builds
@@ -104,14 +111,6 @@
           :server-port 3449
           :css-dirs ["resources/public/css"]
           :ring-handler eventspace.handler/app}
-
-          :cljx {:builds [{:source-paths ["src/cljx"]
-                           :output-path "target/generated/src/clj"
-                           :rules :clj}
-
-                          {:source-paths ["src/cljx"]
-                           :output-path "target/generated/src/cljs"
-                           :rules :cljs}]}
 
          :repl-options {:init-ns eventspace.core}
          :injections [(require 'pjstadig.humane-test-output)
