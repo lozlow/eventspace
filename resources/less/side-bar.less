@@ -1,4 +1,6 @@
 @import '_variables';
+@import '_elements';
+@import (reference) '_mixins';
 
 /*
 Add transition to containers so they can push in and out.
@@ -6,11 +8,7 @@ Add transition to containers so they can push in and out.
 #layout,
 #menu,
 .menu-link {
-    -webkit-transition: all 0.2s ease-out;
-    -moz-transition: all 0.2s ease-out;
-    -ms-transition: all 0.2s ease-out;
-    -o-transition: all 0.2s ease-out;
-    transition: all 0.2s ease-out;
+  .transition(0.2s ease-out);
 }
 
 /*
@@ -72,22 +70,25 @@ appears on the left side of the page.
 */
 
 #menu {
-    margin-left: -200px; /* "#menu" width */
-    width: 200px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    z-index: 1000; /* so the menu or its navicon stays above all content */
-    background: @menu-bg;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+  margin-left: -200px; /* "#menu" width */
+  width: 200px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 1000; /* so the menu or its navicon stays above all content */
+  background: @menu-bg;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  border-right: 4px solid #95a5a6;
+  box-sizing: border-box;
+  .user-select(none);
 }
     /*
     All anchors inside the menu should be styled like this.
     */
     #menu a {
-        color: #999;
+        color: #fff;
         border: none;
         padding: 0.6em 0 0.6em 0.6em;
     }

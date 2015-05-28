@@ -24,7 +24,11 @@
 
 (defn feed-item-comment
   [{:keys [author date content] :as comment}]
-  [:span content])
+  [:div.FeedItemComment
+    [:img.FeedItemComment__profile-image {:src "/img/profile.jpg"}]
+    [:span.FeedItemComment__author author]
+    [:span.FeedItemComment__date date]
+    [:span.FeedItemComment__content content]])
 
 (defn feed-item
   [{:keys [author date] :as item}]

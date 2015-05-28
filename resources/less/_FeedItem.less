@@ -1,28 +1,35 @@
 .FeedItem {
   margin: 14px 0;
   background: @page-panel-bg;
-  border-radius: 2px;
+  .rounded(2px);
   padding: 10px 15px;
   .layer-2;
-}
 
-.FeedItem__profile-image {
-  width: 64px;
-  margin: 0 10px 8px 0;
-}
+  &__profile-image {
+    width: 64px;
+    margin: 0 10px 8px 0;
+  }
 
-.FeedItem__comments {
-  list-style: none;
+  &__comments {
+    list-style: none;
+    padding: 0;
+  }
 }
 
 .NewPost {
   padding: 10px 15px;
   background: @page-panel-bg;
-  border-radius: 2px;
+  .rounded(2px);
   .layer-1;
+
+  &__content {
+    width: 100%;
+    border: 1px solid #ccc;
+    background: transparent;
+  }
 }
 
-.NewPost__content,
+
 .FeedItemCommentBox__content {
   width: 100%;
   border: 1px solid #ccc;
@@ -30,11 +37,20 @@
 }
 
 .NewPost__button.NewPost__button {
-  .button;
-  height: 45px;
+  .button(45px);
 }
 
-.FeedItemCommentBox__new,
-.FeedItemCommentBox__button {
-  .button;
+.FeedItemCommentBox {
+  &__new,
+  &__button {
+    .button;
+  }
+}
+
+.FeedItemComment {
+
+  &__profile-image {
+    width: 32px;
+    margin: 0 6px 4px 0;
+  }
 }
