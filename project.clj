@@ -54,7 +54,8 @@
   :ring {:handler eventspace.handler/app
          :init    eventspace.handler/init
          :destroy eventspace.handler/destroy
-         :uberwar-name "eventspace.war"}
+         :uberwar-name "eventspace.war"
+	 :servlet-path-info? false}
 
   :less {:source-paths ["resources/less"]
          :target-path "resources/public/css"}
