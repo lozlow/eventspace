@@ -2,7 +2,7 @@
   <head>
       <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
       <title>Welcome to eventspace</title>
-      {% style "/css/screen.css" %}
+      <link rel="stylesheet" href="/css/screen.css" />
   </head>
   <body>
 
@@ -16,7 +16,7 @@
       {% script "/js/app.js" %}
       <script type="text/javascript">goog.require("eventspace.app");</script>
     {% else %}
-      {% script "/js/app.js" %}
+      <script type="text/javascript" src="/js/app.js"></script>
     {% endif %}
   </body>
 </html>
