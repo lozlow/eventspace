@@ -1,10 +1,12 @@
 (set-env!
         :target-path "target"
         :resource-paths #{"resources/public"}
-        :source-paths #{"src/cljx" "src/clj" "src/cljs"}
+        :source-paths #{"src/cljx" "src/clj" "src/cljs" "resources/templates"}
         :dependencies '[[adzerk/boot-cljs "0.0-3269-2"]
                         [adzerk/boot-cljs-repl "0.1.8"]
                         [adzerk/boot-reload "0.2.4"]
+                        [pandeiro/boot-http "0.6.1" :scope "test"]
+                        [deraen/boot-less "0.2.1" :scope "test"]
                         ;[deraen/boot-cljx "0.3.0"]
                         [org.clojure/clojure "1.6.0"]
                         [http-kit "2.1.18"]
@@ -40,24 +42,26 @@
   '[adzerk.boot-reload     :refer :all]
   '[adzerk.boot-cljs-repl  :refer :all]
   ;'[deraen.boot-cljx       :refer :all]
+  '[pandeiro.boot-http    :refer [serve]]
   '[eventspace.core        :as server]
   '[eventspace.handler     :as handler]
   '[ring.middleware.reload    :as reload]
   '[ring.middleware.file      :as file]
-  '[ring.middleware.file-info :as file-info])
+  '[ring.middleware.file-info :as file-info]
+  '[deraen.boot-less    :refer [less]])
 
 ; (defn dev-handler []
 ;   (-> server/app (reload/wrap-reload)
 ;                  (file/wrap-file "target/public")
 ;                  (file-info/wrap-file-info)))
 
-(defn dev-handler []
-  (handler/app))
+(def dev-handler
+  handler/app)
 
 (deftask dev-cljs
   "Build cljs for development."
   []
-  (set-env! :source-paths #(conj % "target/generated/cljs" "env/dev/cljs"))
+  (set-env! :source-paths #(conj % "env/dev/cljs"))
   (comp ;(watch)
         (reload :on-jsload (symbol "eventspace.core/init!"))
         (cljs :source-map true
@@ -78,7 +82,8 @@
 (deftask dev-serve
   "Start server for development."
   []
-  (with-post-wrap fileset (server/run (dev-handler))))
+  (comp (serve)
+        (wait)))
 
 (deftask dev
   "Build cljs and start server for development."
@@ -87,6 +92,21 @@
         ;(transform-cljx)
         (dev-cljs)
         (dev-serve)))
+
+(deftask devtest
+  []
+  (set-env! :source-paths #(conj % "env/dev/cljs"))
+  (comp
+    (serve :dir "target")
+    (watch)
+    (reload :on-jsload (symbol "eventspace.core/init!"))
+    (cljs :source-map true
+          :optimizations :none
+          :compiler-options {:externs ["react/externs/react.js"]
+                             :output-dir "js/out"
+                             :output-to "js/app.js"
+                             :main "eventspace.dev"
+                             :pretty-print true})))
 
 (deftask prod
   "Build application uberjar with http-kit main."

@@ -14,7 +14,7 @@
 (defonce nrepl-server (atom nil))
 
 (defroutes base-routes
-           (route/resources "/")
+           (route/resources "/" {:root "target"})
            (route/not-found "Not Found"))
 
 (defn start-nrepl
@@ -70,9 +70,3 @@
         (wrap-routes home-routes middleware/wrap-csrf)
         base-routes)
       middleware/wrap-base))
-
-(def handler
-  (routes
-    service-routes
-    (wrap-routes home-routes middleware/wrap-csrf)
-    base-routes))
