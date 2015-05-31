@@ -1,4 +1,4 @@
-(ns eventspace.app
+(ns eventspace.prod
   (:require [eventspace.core :as core]))
 
 ;;ignore println statements in prod
