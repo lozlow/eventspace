@@ -1,13 +1,11 @@
 (ns eventspace.core
   (:require [reagent.core :as reagent :refer [atom]]
-            [reagent.session :as session]
             [re-frame.core :refer [dispatch-sync]]
             [eventspace.menu.core :as menu]
             [eventspace.space.core :as space]
             [eventspace.database]
             [eventspace.subscriptions]
-            [eventspace.handlers])
-  (:import goog.History))
+            [eventspace.handlers]))
 
 (enable-console-print!)
 
