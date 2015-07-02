@@ -9,6 +9,7 @@ pom.xml
 /.env
 *.log
 .nrepl-history
+.nrepl-port
 .DS_Store
 /resources/public/js/out
 /resources/public/js/app.js

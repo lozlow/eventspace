@@ -1,6 +1,8 @@
 @import '_variables';
 @import '_elements';
-@import (reference) '_mixins';
+@import '_mixins';
+
+$main-colour--active: lighten($main-colour, 8);
 
 /*
 Add transition to containers so they can push in and out.
@@ -8,7 +10,7 @@ Add transition to containers so they can push in and out.
 #layout,
 #menu,
 .menu-link {
-  .transition(0.2s ease-out);
+  @include transition(0.2s ease-out);
 }
 
 /*
@@ -77,18 +79,18 @@ appears on the left side of the page.
   left: 0;
   bottom: 0;
   z-index: 1000; /* so the menu or its navicon stays above all content */
-  background: @menu-bg;
+  background: $main-colour;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  border-right: 4px solid #95a5a6;
+  border-right: 4px solid lighten($main-colour, 10);
   box-sizing: border-box;
-  .user-select(none);
+  @include user-select(none);
 }
     /*
     All anchors inside the menu should be styled like this.
     */
     #menu a {
-        color: #fff;
+        color: $accent-1;
         border: none;
         padding: 0.6em 0 0.6em 0.6em;
     }
@@ -111,7 +113,7 @@ appears on the left side of the page.
     */
     #menu .pure-menu ul,
     #menu .pure-menu .menu-item-divided {
-        border-top: 1px solid #34495e;
+        border-top: 1px solid $main-colour--active;
     }
         /*
         Change color of the anchor links on hover/focus.
@@ -119,7 +121,7 @@ appears on the left side of the page.
         #menu .pure-menu li a:hover,
         #menu .pure-menu li a:focus,
         #menu .pure-menu li a.active {
-            background: #34495e;
+            background: $main-colour--active;
             cursor: pointer;
         }
 

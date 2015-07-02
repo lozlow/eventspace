@@ -1,7 +1,7 @@
 (set-env!
         :target-path "target"
         :resource-paths #{"resources/public"}
-        :source-paths #{"src/cljs"}
+        :source-paths #{"src/cljs" "resources/less"}
         :dependencies '[[adzerk/boot-cljs      "0.0-2814-4" :scope "test"]
                         [adzerk/boot-cljs-repl "0.1.9"      :scope "test"]
                         [adzerk/boot-reload    "0.2.4"      :scope "test"]
@@ -22,7 +22,7 @@
 (deftask build []
   (comp (speak)
         (cljs)
-        ));(sass :output-dir "css")))
+        (sass :output-dir "css")))
 
 (deftask run []
   (comp (serve :dir "target")
@@ -41,7 +41,7 @@
                        :compiler-options {:output-to "js/app.js"
                                           :main "eventspace.prod" ;:asset-path "js/out"
                                           }}
-                      );sass   {:output-style "compressed"})
+                      sass   {:output-style "compressed"})
   identity)
 
 (deftask development []
@@ -54,8 +54,8 @@
                                           :main "eventspace.dev"
                                           :asset-path "js/out"}}
                  reload {:on-jsload 'eventspace.core/init!}
-                 );sass   {:line-numbers true
-                  ;                   :source-maps  true})
+                 sass   {:line-numbers true
+                         :source-maps  true})
   identity)
 
 (deftask dev

@@ -1,9 +1,11 @@
+$border-colour: #ccc;
+
 .FeedItem {
   margin: 14px 0;
-  background: @page-panel-bg;
-  .rounded(2px);
+  background: $accent-1;
+  @include rounded(2px);
   padding: 10px 15px;
-  .layer-2;
+  @include layer-2;
 
   &__profile-image {
     width: 64px;
@@ -18,37 +20,35 @@
 
 .NewPost {
   padding: 10px 15px;
-  background: @page-panel-bg;
-  .rounded(2px);
-  .layer-1;
+  background: $accent-1;
+  @include rounded(2px);
+  @include layer-1;
 
   &__content {
     width: 100%;
-    border: 1px solid #ccc;
+    border: 1px solid $border-colour;
     background: transparent;
   }
-}
 
-
-.FeedItemCommentBox__content {
-  width: 100%;
-  border: 1px solid #ccc;
-  background: transparent;
-}
-
-.NewPost__button.NewPost__button {
-  .button(45px);
+  &__button {
+    @include button(45px);
+  }
 }
 
 .FeedItemCommentBox {
   &__new,
   &__button {
-    .button;
+    @include button;
+  }
+
+  &__content {
+    width: 100%;
+    border: 1px solid $border-colour;
+    background: transparent;
   }
 }
 
 .FeedItemComment {
-
   &__profile-image {
     width: 32px;
     margin: 0 6px 4px 0;

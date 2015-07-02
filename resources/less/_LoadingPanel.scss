@@ -1,10 +1,10 @@
 .LoadingPanel {
-  background: @menu-bg;
+  background: $main-colour;
   width: 100px;
   height: 100px;
   margin: 0 auto;
-  .rounded(2px);
-  .layer-7;
+  @include rounded(2px);
+  @include layer-7;
 
   &__spinner {
     margin: 0 auto;
