@@ -20,8 +20,7 @@
   '[jeluard.boot-notify :refer [notify]])
 
 (deftask build []
-  (comp (speak)
-        (cljs)
+  (comp (cljs)
         (sass :output-dir "css")))
 
 (deftask run []
@@ -29,7 +28,8 @@
         (watch)
         (cljs-repl)
         (reload)
-        (build)))
+        (comp (speak)
+              (build))))
 
 (deftask production []
   (set-env! :source-paths #(conj % "env/prod/cljs"))
