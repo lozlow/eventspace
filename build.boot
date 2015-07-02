@@ -2,11 +2,10 @@
         :target-path "target"
         :resource-paths #{"resources/public"}
         :source-paths #{"src/cljs" "resources/less"}
-        :dependencies '[[adzerk/boot-cljs      "0.0-2814-4" :scope "test"]
+        :dependencies '[[adzerk/boot-cljs      "0.0-3308-0" :scope "test"]
                         [adzerk/boot-cljs-repl "0.1.9"      :scope "test"]
-                        [adzerk/boot-reload    "0.2.4"      :scope "test"]
-                        [pandeiro/boot-http    "0.6.1"      :scope "test"]
-                        [jeluard/boot-notify "0.2.0" :scope "test"]
+                        [adzerk/boot-reload    "0.3.1"      :scope "test"]
+                        [pandeiro/boot-http    "0.6.3-SNAPSHOT"      :scope "test"]
                         [mathias/boot-sassc  "0.1.1" :scope "test"]
                         [reagent "0.5.0"]
                         [re-frame "0.4.1"]])
@@ -16,8 +15,7 @@
   '[adzerk.boot-cljs-repl :refer [cljs-repl start-repl]]
   '[adzerk.boot-reload    :refer [reload]]
   '[pandeiro.boot-http    :refer [serve]]
-  '[mathias.boot-sassc  :refer [sass]]
-  '[jeluard.boot-notify :refer [notify]])
+  '[mathias.boot-sassc  :refer [sass]])
 
 (deftask build []
   (comp (cljs)
