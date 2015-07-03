@@ -1,36 +1,15 @@
-<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
-{% style "/css/side-bar.css" %}
-
-<div id="overlay"></div>
-
-<div id="layout">
-    <a href="#menu" id="menuLink" class="menu-link">
-        <span></span>
-    </a>
-
-    <div id="menu">
-    </div>
-
-    <div id="main">
-        <div class="content">
-            <div id="app"></div>
-        </div>
-    </div>
-</div>
-
-<script>
 (function (window, document) {
 
-    var layout   = document.getElementById('layout'),
-        menu     = document.getElementById('menu'),
-        menuLink = document.getElementById('menuLink');
+    var layout = document.getElementById('layout');
+    var menu = document.getElementById('menu');
+    var menuLink = document.getElementById('menuLink');
 
     function toggleClass(element, className) {
         var classes = element.className.split(/\s+/),
             length = classes.length,
             i = 0;
 
-        for(; i < length; i++) {
+        for (; i < length; i++) {
           if (classes[i] === className) {
             classes.splice(i, 1);
             break;
@@ -54,4 +33,3 @@
     };
 
 }(this, this.document));
-</script>

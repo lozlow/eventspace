@@ -1,0 +1,31 @@
+{
+	"env": {
+		"browser": true
+	},
+	"ecmaFeatures": {
+		"modules": true
+	},
+	"globals": {
+		"__DEV__": true,
+		"__SERVER__": true
+	},
+	"rules": {
+		"strict": [2, "global"],
+		"eqeqeq": [2, "smart"],
+		"no-underscore-dangle": 0,
+		"no-use-before-define": [2, "nofunc"],
+		"quotes": [2, "single", "avoid-escape"],
+		"no-self-compare": 2,
+		"radix": 2,
+		"wrap-iife": [2, "outside"],
+		"brace-style": [2, "1tbs", { "allowSingleLine": true }],
+		"no-nested-ternary": 2,
+		"no-lonely-if": 2,
+		"space-after-keywords": [2, "always"],
+		"space-in-brackets": [2, "never"],
+		"space-in-parens": [2, "never"],
+		"space-unary-ops": [1, { "words": true, "nonwords": false }],
+		"no-unused-vars": [2, {"vars": "all", "args": "none"}],
+		"max-len": [1, 120, 4]
+	}
+}

@@ -1,15 +1,13 @@
 <html>
   <head>
-      <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no' />
       <title>Welcome to eventspace</title>
-      <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
-      <link rel="stylesheet" href="/css/screen.css">
-      <link rel="stylesheet" href="/css/side-bar.css">
+      <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css" />
+      <link rel="stylesheet" href="/css/screen.css" />
+      <link rel="stylesheet" href="/css/side-bar.css" />
   </head>
   <body>
-
-    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
-
     <div id="overlay"></div>
 
     <div id="layout">
@@ -27,45 +25,7 @@
         </div>
     </div>
 
-    <script>
-    (function (window, document) {
-
-        var layout   = document.getElementById('layout'),
-            menu     = document.getElementById('menu'),
-            menuLink = document.getElementById('menuLink');
-
-        function toggleClass(element, className) {
-            var classes = element.className.split(/\s+/),
-                length = classes.length,
-                i = 0;
-
-            for(; i < length; i++) {
-              if (classes[i] === className) {
-                classes.splice(i, 1);
-                break;
-              }
-            }
-            // The className is not found
-            if (length === classes.length) {
-                classes.push(className);
-            }
-
-            element.className = classes.join(' ');
-        }
-
-        menuLink.onclick = function (e) {
-            var active = 'active';
-
-            e.preventDefault();
-            toggleClass(layout, active);
-            toggleClass(menu, active);
-            toggleClass(menuLink, active);
-        };
-
-    }(this, this.document));
-    </script>
-      <!-- // <script type="text/javascript" src="/js/out/goog/base.js"></script> -->
-      <script type="text/javascript" src="/js/app.js"></script>
-      <!-- // <script type="text/javascript">goog.require("eventspace.dev");</script> -->
+    <script type="text/javascript" src="/js/app.js"></script>
+    <script type="text/javascript" src="/js/menu.js"></script>
   </body>
 </html>
