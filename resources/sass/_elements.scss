@@ -11,7 +11,6 @@
 }
 
 @mixin button($height: 40px) {
-  $shadow: #dadedf;
   position: relative;
   height: $height;
   text-align: center;

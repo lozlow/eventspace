@@ -3,7 +3,8 @@
   (:require [reagent.core :refer [atom]]
             [re-frame.core :refer [subscribe dispatch]]
             [eventspace.space.feed-item :as fi]
-            [eventspace.util :refer [with-focus]]))
+            [eventspace.util :refer [with-focus]])
+  (:use [eventspace.widgets.tabbed-pane :only [tabbed-pane]]))
 
 (defn feed-panel
   []
@@ -44,14 +45,23 @@
 
 (defn title
   []
-  (let [space (subscribe [:selected-space])]
+  (let [space (subscribe [:selected-space])
+        tabs [{:id "feed" :label "Feed"}
+              {:id "events" :label "Events"}
+              {:id "members" :label "Members"}]
+        selected (atom (:id (first tabs)))]
     (fn []
-      [:h1 (:title @space)])))
+      [:div.SpaceHeader
+        [:div.SpaceHeader__title
+          [:h1 (:title @space)]]
+        [:div.SpaceHeader__tabs
+          [tabbed-pane :tabs tabs :selected selected :on-change (fn [new] (println "hello" new)) :style {:max-width 800 :margin "0 auto"}]]])))
 
 (defn render-space
   []
   [:div
     ; [loading-panel]
     [title]
-    [create-post]
-    [feed-panel]])
+    [:div.content
+      [create-post]
+      [feed-panel]]])
