@@ -1,9 +1,11 @@
 (ns eventspace.space.core
   (:require-macros [reagent.ratom :refer [reaction]])
-  (:require [reagent.core :refer [atom]]
+  (:require [reagent.core :refer [atom] :as reagent]
             [re-frame.core :refer [subscribe dispatch]]
             [eventspace.space.feed-item :as fi]
-            [eventspace.util :refer [with-focus]])
+            [eventspace.util :refer [with-focus]]
+            [goog.dom :as dom]
+            [goog.events :as events])
   (:use [eventspace.widgets.tabbed-pane :only [tabbed-pane]]))
 
 (defn feed-panel
@@ -46,22 +48,33 @@
 (defn title
   []
   (let [space (subscribe [:selected-space])
+        scroll-top (subscribe [:scroll-top])
+        title-stuck? (reaction (> @scroll-top 55))
+        tabs-stuck? (reaction (> @scroll-top 97))
         tabs [{:id "feed" :label "Feed"}
               {:id "events" :label "Events"}
               {:id "members" :label "Members"}]
         selected (atom (:id (first tabs)))]
     (fn []
       [:div.SpaceHeader
-        [:div.SpaceHeader__title
+        [:div {:class (str "SpaceHeader__title" (when @title-stuck? "--stuck"))}
           [:h1 (:title @space)]]
-        [:div.SpaceHeader__tabs
+        [:div.SpaceHeader__summary (:summary @space)]
+        [:div {:class (str "SpaceHeader__tabs" (when @tabs-stuck? "--stuck"))}
           [tabbed-pane :tabs tabs :selected selected :on-change (fn [new] (println "hello" new)) :style {:max-width 800 :margin "0 auto"}]]])))
 
 (defn render-space
   []
-  [:div
-    ; [loading-panel]
-    [title]
-    [:div.content
-      [create-post]
-      [feed-panel]]])
+  (let [window (dom/getWindow)
+        scroll-fn #(dispatch [:update-scroll-top (.-clientY %)])]
+    (reagent/create-class
+      {:component-did-mount #(events/listen window (.-SCROLL events/EventType) scroll-fn)
+       :display-name  "render-space"
+       :reagent-render
+         (fn []
+          [:div
+             ; [loading-panel]
+              [title]
+              [:div.content
+                [create-post]
+                [feed-panel]]])})))

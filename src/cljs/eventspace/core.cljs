@@ -13,7 +13,7 @@
 ;; Initialize app
 (defn mount-components []
   (reagent/render-component menu/render-menu (.getElementById js/document "menu"))
-  (reagent/render-component space/render-space (.getElementById js/document "app")))
+  (reagent/render-component [space/render-space] (.getElementById js/document "app")))
 
 (defn ^:export init! []
   (dispatch-sync [:initialise-database])

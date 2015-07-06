@@ -19,6 +19,9 @@ textarea {
 }
 
 .SpaceHeader {
+  $title-height: 55px;
+  $tabs-height: 42px;
+
   margin: 0;
   background: $accent-1;
 
@@ -26,28 +29,48 @@ textarea {
     max-width: 800px;
     margin: 0 auto;
 
+    &--stuck {
+      position: fixed;
+      top: 0;
+    }
+
     h1 {
       margin-top: 0;
       padding-top: 0.67em;
     }
   }
 
+  &__summary {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
   &__tabs {
     border-top: 1px solid $shadow;
     border-bottom: 1px solid $shadow;
+
+    &--stuck {
+      position: fixed;
+      top: $title-height;
+    }
   }
 }
 
 /** Widgets **/
 
 .TabbedPane {
+  display: -webkit-flex;
   display: flex;
   margin-bottom: 10px;
+  flex-direction: row;
+  -webkit-flex-wrap: nowrap;
+  flex-wrap: nowrap;
 
   &__tab {
     @include button;
     line-height: 40px;
-    flex-grow: 1;
+    -webkit-flex: 1 0 auto;
+    flex: 1 0 auto;
     border-top: none;
     border-bottom: none;
     box-shadow: none;
