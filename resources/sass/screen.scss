@@ -26,8 +26,7 @@ textarea {
   background: $accent-1;
 
   &__title {
-    max-width: 800px;
-    margin: 0 auto;
+    @include content-column;
 
     h1 {
       margin-top: 0;
@@ -36,8 +35,7 @@ textarea {
   }
 
   &__summary {
-    max-width: 800px;
-    margin: 0 auto;
+    @include content-column;
   }
 
   &__tabs {
@@ -55,6 +53,9 @@ textarea {
   flex-direction: row;
   -webkit-flex-wrap: nowrap;
   flex-wrap: nowrap;
+
+  @include content-column;
+  padding: 0;
 
   &__tab {
     @include button;

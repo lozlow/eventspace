@@ -34,7 +34,7 @@ The content `<div>` is where all your content goes.
 .content {
     margin: 0 auto;
     padding: 1.5em 2em;
-    max-width: 800px;
+    max-width: $content-width;
     margin-bottom: 50px;
     line-height: 1.6em;
 }
@@ -114,6 +114,7 @@ appears on the left side of the page.
     #menu .pure-menu ul,
     #menu .pure-menu .menu-item-divided {
         border-top: 1px solid $main-colour--active;
+        border-bottom: 1px solid $main-colour--active;
     }
         /*
         Change color of the anchor links on hover/focus.

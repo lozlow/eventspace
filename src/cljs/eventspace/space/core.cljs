@@ -58,12 +58,12 @@
           [:h1 (:title @space)]]
         [:div.SpaceHeader__summary (:summary @space)]
         [:div {:class (str "SpaceHeader__tabs")}
-          [tabbed-pane :tabs tabs :selected selected :on-change (fn [new] (println "hello" new)) :style {:max-width 800 :margin "0 auto"}]]])))
+          [tabbed-pane :tabs tabs :selected selected :on-change (fn [new] (println "hello" new))]]])))
 
 (defn render-space
   []
     [:div
-     ; [loading-panel]
+      ; [loading-panel]
       [title]
       [:div.content
         [create-post]

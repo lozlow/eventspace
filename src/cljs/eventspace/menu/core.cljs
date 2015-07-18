@@ -23,8 +23,13 @@
         (for [space @spaces]
           ^{:key (:id space)} [spaces-item space])])))
 
+(defn new-space
+  []
+  [:a.pure-menu-link "Create space"])
+
 (defn render-menu
   []
   [:div.pure-menu
     [header]
-    [spaces-list]])
+    [spaces-list]
+    [new-space]])
