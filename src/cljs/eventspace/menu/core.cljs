@@ -25,7 +25,8 @@
 
 (defn new-space
   []
-  [:a.pure-menu-link "Create space"])
+  (let []
+    [:a.pure-menu-link {:on-click clickfn} "Create space"]))
 
 (defn render-menu
   []
