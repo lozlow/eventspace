@@ -29,11 +29,6 @@ textarea {
     max-width: 800px;
     margin: 0 auto;
 
-    &--stuck {
-      position: fixed;
-      top: 0;
-    }
-
     h1 {
       margin-top: 0;
       padding-top: 0.67em;
@@ -48,11 +43,6 @@ textarea {
   &__tabs {
     border-top: 1px solid $shadow;
     border-bottom: 1px solid $shadow;
-
-    &--stuck {
-      position: fixed;
-      top: $title-height;
-    }
   }
 }
 

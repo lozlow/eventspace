@@ -21,8 +21,3 @@
   :feed
   (fn [db _]
     (reaction (:feed @db))))
-
-(register-sub
-  :scroll-top
-  (fn [db _]
-    (reaction (:scroll-top @db))))

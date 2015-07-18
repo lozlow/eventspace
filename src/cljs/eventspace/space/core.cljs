@@ -48,33 +48,23 @@
 (defn title
   []
   (let [space (subscribe [:selected-space])
-        scroll-top (subscribe [:scroll-top])
-        title-stuck? (reaction (> @scroll-top 55))
-        tabs-stuck? (reaction (> @scroll-top 97))
         tabs [{:id "feed" :label "Feed"}
               {:id "events" :label "Events"}
               {:id "members" :label "Members"}]
         selected (atom (:id (first tabs)))]
     (fn []
       [:div.SpaceHeader
-        [:div {:class (str "SpaceHeader__title" (when @title-stuck? "--stuck"))}
+        [:div {:class (str "SpaceHeader__title")}
           [:h1 (:title @space)]]
         [:div.SpaceHeader__summary (:summary @space)]
-        [:div {:class (str "SpaceHeader__tabs" (when @tabs-stuck? "--stuck"))}
+        [:div {:class (str "SpaceHeader__tabs")}
           [tabbed-pane :tabs tabs :selected selected :on-change (fn [new] (println "hello" new)) :style {:max-width 800 :margin "0 auto"}]]])))
 
 (defn render-space
   []
-  (let [window (dom/getWindow)
-        scroll-fn #(dispatch [:update-scroll-top (.-clientY %)])]
-    (reagent/create-class
-      {:component-did-mount #(events/listen window (.-SCROLL events/EventType) scroll-fn)
-       :display-name  "render-space"
-       :reagent-render
-         (fn []
-          [:div
-             ; [loading-panel]
-              [title]
-              [:div.content
-                [create-post]
-                [feed-panel]]])})))
+    [:div
+     ; [loading-panel]
+      [title]
+      [:div.content
+        [create-post]
+        [feed-panel]]])
