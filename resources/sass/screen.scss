@@ -36,6 +36,7 @@ textarea {
 
   &__summary {
     @include content-column;
+    padding-bottom: 10px;
   }
 
   &__tabs {

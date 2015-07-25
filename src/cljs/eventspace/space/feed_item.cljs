@@ -2,7 +2,7 @@
   (:require-macros [reagent.ratom :refer [reaction]])
   (:require [reagent.core :refer [atom]]
             [re-frame.core :refer [subscribe dispatch]]
-            [eventspace.util :refer [with-focus]]))
+            [eventspace.util :refer [with-focus gravatar-url]]))
 
 (defmulti feed-item-content :type)
 
@@ -25,7 +25,7 @@
 (defn feed-item-comment
   [{:keys [author date content] :as comment}]
   [:div.FeedItemComment
-    [:img.FeedItemComment__profile-image {:src "/img/profile.jpg"}]
+    [:img.FeedItemComment__profile-image {:src (gravatar-url "example@example.com" :size 32)}]
     [:span.FeedItemComment__author author]
     [:span.FeedItemComment__date date]
     [:span.FeedItemComment__content content]])
@@ -34,7 +34,7 @@
   [{:keys [author date] :as item}]
   [:article.FeedItem
     [:header
-      [:img.FeedItem__profile-image {:src "/img/profile.jpg"}]
+      [:img.FeedItem__profile-image {:src (gravatar-url "example@example.com")}]
       [:span.FeedItem__author author]
       [:span.FeedItem__date date]]
     [feed-item-content item]

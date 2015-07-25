@@ -10,6 +10,8 @@ $border-colour: #ccc;
   &__profile-image {
     width: 64px;
     margin: 0 10px 8px 0;
+    vertical-align: middle;
+    @include rounded(32px);
   }
 
   &__comments {
@@ -52,5 +54,7 @@ $border-colour: #ccc;
   &__profile-image {
     width: 32px;
     margin: 0 6px 4px 0;
+    vertical-align: middle;
+    @include rounded(16px);
   }
 }

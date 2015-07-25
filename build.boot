@@ -10,7 +10,8 @@
                         [pandeiro/boot-http    "0.6.3-SNAPSHOT"      :scope "test"]
                         [mathias/boot-sassc  "0.1.1" :scope "test"]
                         [reagent "0.5.0"]
-                        [re-frame "0.4.1"]])
+                        [re-frame "0.4.1"]
+                        [cljs-hash "0.0.2"]])
 
 (require
   '[adzerk.boot-cljs      :refer [cljs]]
