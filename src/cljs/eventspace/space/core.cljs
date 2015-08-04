@@ -1,6 +1,8 @@
 (ns eventspace.space.core
-  (:require-macros [reagent.ratom :refer [reaction]])
+  (:require-macros [reagent.ratom :refer [reaction]]
+                   [kioo.reagent :refer [defsnippet deftemplate]])
   (:require [reagent.core :refer [atom] :as reagent]
+            [kioo.reagent :refer [content substitute]]
             [re-frame.core :refer [subscribe dispatch]]
             [eventspace.space.feed-item :as fi]
             [eventspace.util :refer [with-focus]]
@@ -45,6 +47,13 @@
   [:div.LoadingPanel
     [:img.LoadingPanel__spinner {:src "/img/puff.svg"}]])
 
+(deftemplate space-header
+  "space-header.html"
+  [title summary tab-pane]
+  {[:.SpaceHeader__title :> :h1] (content title)
+   [:.SpaceHeader__summary] (content summary)
+   [:.SpaceHeader__tabs] (content tab-pane)})
+
 (defn title
   []
   (let [space (subscribe [:selected-space])
@@ -53,12 +62,7 @@
               {:id "members" :label "Members"}]
         selected (atom (:id (first tabs)))]
     (fn []
-      [:div.SpaceHeader
-        [:div {:class (str "SpaceHeader__title")}
-          [:h1 (:title @space)]]
-        [:div.SpaceHeader__summary (:summary @space)]
-        [:div {:class (str "SpaceHeader__tabs")}
-          [tabbed-pane :tabs tabs :selected selected :on-change (fn [new] (println "hello" new))]]])))
+      [space-header (:title @space) (:summary @space) [tabbed-pane :tabs tabs :selected selected :on-change (fn [new] (println "hello" new))]])))
 
 (defn render-space
   []

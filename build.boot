@@ -1,9 +1,9 @@
 (set-env!
         :target-path "target"
         :resource-paths #{"resources/public"}
-        :source-paths #{"src/cljs" "resources/sass"}
+        :source-paths #{"src/cljs" "resources/sass" "resources/templates"}
         :dependencies '[[org.clojure/clojure "1.7.0"]
-                        [org.clojure/clojurescript "0.0-3308"]
+                        [org.clojure/clojurescript "1.7.28"]
                         [adzerk/boot-cljs      "0.0-3308-0" :scope "test"]
                         [adzerk/boot-cljs-repl "0.1.9"      :scope "test"]
                         [adzerk/boot-reload    "0.3.1"      :scope "test"]
@@ -11,7 +11,8 @@
                         [mathias/boot-sassc  "0.1.1" :scope "test"]
                         [reagent "0.5.0"]
                         [re-frame "0.4.1"]
-                        [cljs-hash "0.0.2"]])
+                        [cljs-hash "0.0.2"]
+                        [org.clojars.jaen/kioo "0.5.0"]])
 
 (require
   '[adzerk.boot-cljs      :refer [cljs]]

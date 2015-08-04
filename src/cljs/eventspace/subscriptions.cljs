@@ -16,7 +16,6 @@
                      (filter #(= (:id %) @id))
                      first)))))
 
-
 (register-sub
   :feed
   (fn [db _]
