@@ -4,8 +4,8 @@
             [eventspace.menu.core :as menu]
             [eventspace.space.core :as space]
             [eventspace.database]
-            [eventspace.subscriptions]
-            [eventspace.handlers]))
+            [eventspace.subscriptions.core]
+            [eventspace.handlers.core]))
 
 (enable-console-print!)
 

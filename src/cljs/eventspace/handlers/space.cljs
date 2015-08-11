@@ -1,5 +1,6 @@
-(ns eventspace.handlers
-  (:require [re-frame.core :refer [dispatch register-handler]]))
+(ns eventspace.handlers.space
+  (:require [eventspace.handlers.comms]
+            [re-frame.core :refer [dispatch register-handler]]))
 
 (register-handler
   :select-space

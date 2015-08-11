@@ -1,4 +1,4 @@
-(ns eventspace.subscriptions
+(ns eventspace.subscriptions.space
   (:require-macros [reagent.ratom :refer [reaction]])
   (:require [re-frame.core :refer [subscribe dispatch register-sub]]))
 

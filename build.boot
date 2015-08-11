@@ -1,37 +1,59 @@
 (set-env!
-        :target-path "target"
-        :resource-paths #{"resources/public"}
-        :source-paths #{"src/cljs" "resources/sass" "resources/templates"}
-        :dependencies '[[org.clojure/clojure "1.7.0"]
-                        [org.clojure/clojurescript "1.7.28"]
-                        [adzerk/boot-cljs      "0.0-3308-0" :scope "test"]
-                        [adzerk/boot-cljs-repl "0.1.9"      :scope "test"]
-                        [adzerk/boot-reload    "0.3.1"      :scope "test"]
-                        [pandeiro/boot-http    "0.6.3-SNAPSHOT"      :scope "test"]
-                        [mathias/boot-sassc  "0.1.1" :scope "test"]
-                        [reagent "0.5.0"]
-                        [re-frame "0.4.1"]
-                        [cljs-hash "0.0.2"]
-                        [org.clojars.jaen/kioo "0.5.0"]])
+  :target-path "target"
+  :resource-paths #{"resources/public"}
+  :source-paths #{"src/clj" "src/cljs" "resources/sass" "resources/templates"}
+  :dependencies '[[org.clojure/clojure "1.7.0"]
+                  [org.clojure/clojurescript "1.7.48"]
+                  [adzerk/boot-cljs "0.0-3308-0" :scope "test"]
+                  [adzerk/boot-cljs-repl "0.1.9" :scope "test"]
+                  [adzerk/boot-reload "0.3.1" :scope "test"]
+                  [pandeiro/boot-http "0.6.3-SNAPSHOT" :scope "test"]
+                  [mathias/boot-sassc "0.1.1" :scope "test"]
+                  [reagent "0.5.0"]
+                  [re-frame "0.4.1"]
+                  [cljs-hash "0.0.2"]
+                  [org.clojars.jaen/kioo "0.5.0"]
+                  [environ "1.0.0"]
+                  [danielsz/boot-environ "0.0.4"]
+                  [org.danielsz/system "0.1.8"]
+                  [org.clojure/tools.nrepl "0.2.10"]
+                  [org.clojure/core.async "0.1.346.0-17112a-alpha"]
+                  [com.taoensso/sente "1.5.0"]
+                  [http-kit "2.1.19"]
+                  [ring "1.4.0-RC1"]
+                  [ring/ring-defaults "0.1.5"] ; Includes `ring-anti-forgery`, etc.
+                  [compojure "1.3.4"] ; Or routing lib of your choice
+                  [com.datomic/datomic-pro "0.9.5206"]
+                  [com.cognitect/transit-clj "0.8.275"]
+                  [com.cognitect/transit-cljs "0.8.220"]
+                  [com.taoensso/encore "2.4.2"]
+                  [cheshire "5.4.0"]])
 
 (require
-  '[adzerk.boot-cljs      :refer [cljs]]
+  '[adzerk.boot-cljs :refer [cljs]]
   '[adzerk.boot-cljs-repl :refer [cljs-repl start-repl]]
-  '[adzerk.boot-reload    :refer [reload]]
-  '[pandeiro.boot-http    :refer [serve]]
-  '[mathias.boot-sassc  :refer [sass]])
+  '[adzerk.boot-reload :refer [reload]]
+  '[pandeiro.boot-http :refer [serve]]
+  '[mathias.boot-sassc :refer [sass]]
+  '[reloaded.repl :refer [init start stop go reset]]
+  '[eventspace.systems :refer [dev-system]]
+  '[danielsz.boot-environ :refer [environ]]
+  '[system.boot :refer [system run]])
 
-(deftask build []
+(deftask build-assets []
   (comp (cljs)
         (sass :output-dir "css")))
 
-(deftask run []
+(deftask build []
   (comp (serve :dir "target")
-        (watch)
+        (environ :env {:http-port 3019})
+        (repl :server true)
         (cljs-repl)
+        (watch)
+        (system :sys #'dev-system :auto-start true :hot-reload true :files ["core.clj"])
         (reload)
         (comp (speak)
-              (build))))
+              (build-assets))))
 
 (deftask production []
   (set-env! :source-paths #(conj % "env/prod/cljs"))
@@ -64,4 +86,4 @@
   "Simple alias to run application in development mode"
   []
   (comp (development)
-        (run)))
+        (build)))

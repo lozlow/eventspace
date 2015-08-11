@@ -45,6 +45,7 @@
 (defn loading-panel
   []
   [:div.LoadingPanel
+    [:button {:on-click #(dispatch [:comms/login {:user "pete" :password "password"}])} "Login"]
     [:img.LoadingPanel__spinner {:src "/img/puff.svg"}]])
 
 (deftemplate space-header
