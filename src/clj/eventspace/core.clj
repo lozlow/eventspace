@@ -4,6 +4,8 @@
             [ring.middleware.anti-forgery :refer :all]
             [ring.middleware.session.cookie :refer (cookie-store)]
             [ring.middleware.session :refer [wrap-session]]
+            [ring.middleware.resource :refer [wrap-resource]]
+            [ring.util.response :refer [response content-type]]
             [compojure.core :as comp :refer (defroutes GET POST)]
             [compojure.route :as route]
             [hiccup.core :as hiccup]
@@ -12,11 +14,20 @@
             [taoensso.sente :as sente]
             [org.httpkit.server :as http-kit]
             [reloaded.repl :refer [system]]
-            [cheshire.core :refer :all]))
+            [cheshire.core :refer :all]
+            [selmer.parser :as parser]))
 
-(sente/set-logging-level! :trace) ; Uncomment for more logging
+; (sente/set-logging-level! :trace) ; Uncomment for more logging
+
+(parser/set-resource-path! (clojure.java.io/resource "templates"))
 
 (def chsk-send! (:chsk-send! (:sente system)))
+
+(defn render [template]
+  (-> template
+      (parser/render-file {:csrf-token *anti-forgery-token*})
+      response
+      (content-type "text/html; charset=utf-8")))
 
 (defn login!
   "Here's where you'll add your server-side login/auth procedure (Friend, etc.).
@@ -29,26 +40,20 @@
     {:status 200 :session (assoc session :uid user-id)}))
 
 (defroutes my-routes
-  ; (GET "/" [] (generate-string {:csrf-token *anti-forgery-token*}))
-  (GET  "/chsk" req ((:ring-ajax-get-or-ws-handshake (:sente system)) req))
-  ; (fn [req]
-  ;   (if (:uid (:session req))
-  ;     (do (println "Logged in as" (:uid (:session req))) ((:ring-ajax-get-or-ws-handshake (:sente system)) req))
-  ;     {:status 401})))
+  (GET "/" [] (render "index.html"))
+  (GET  "/chsk" req ;((:ring-ajax-get-or-ws-handshake (:sente system)) req))
+    (fn [req]
+      (if (:uid (:session req))
+        (do (println "Logged in as" (:uid (:session req))) ((:ring-ajax-get-or-ws-handshake (:sente system)) req))
+        {:status 401})))
   (POST "/chsk" req ((:ring-ajax-post (:sente system)) req))
   (POST "/login" req (login! req))
   (route/not-found "<h1>Page not found</h1>"))
 
-(defn wrap-index
-  [handler]
-  (fn [req]
-    (handler
-      (update-in req [:uri] #(if (= "/" %) "/index.html" %)))))
-
 (def my-ring-handler
   (let [ring-defaults-config
         (-> site-defaults
-            (assoc-in [:static :resources] "/")
+            (assoc-in [:static :resources] "public")
             (assoc-in [:security :anti-forgery] {:read-token (fn [req] (-> req :params :csrf-token))}))]
 
     ;; NB: Sente requires the Ring `wrap-params` + `wrap-keyword-params`
@@ -57,28 +62,26 @@
     ;; that they're included yourself if you're not using `wrap-defaults`.
     ;;
     (wrap-defaults my-routes ring-defaults-config)))
-    ;(-> (wrap-defaults my-routes ring-defaults-config)
-    ;     wrap-index)))
 
 ; ;;;; Example: broadcast server>user
 ;
 ; ;; As an example of push notifications, we'll setup a server loop to broadcast
 ; ;; an event to _all_ possible user-ids every 10 seconds:
-(defn start-broadcaster!
-  []
-  (println "Starting broadcaster")
-    (go-loop [i 0]
-      (<! (async/timeout 10000))
-      (let [chsk-send! (:chsk-send! (:sente system))]
-        (println (format "Broadcasting server>user: %s" @(:connected-uids (:sente system))))
-        (doseq [uid (:any @(:connected-uids (:sente system)))]
-          (chsk-send! uid
-            [:some/broadcast
-              {:what-is-this "A broadcast pushed from server"
-               :how-often    "Every 10 seconds"
-               :to-whom uid
-               :i i}])))
-      (recur (inc i))))
+; (defn start-broadcaster!
+;   []
+;   (println "Starting broadcaster")
+;     (go-loop [i 0]
+;       (<! (async/timeout 10000))
+;       (let [chsk-send! (:chsk-send! (:sente system))]
+;         (println (format "Broadcasting server>user: %s" @(:connected-uids (:sente system))))
+;         (doseq [uid (:any @(:connected-uids (:sente system)))]
+;           (chsk-send! uid
+;             [:some/broadcast
+;               {:what-is-this "A broadcast pushed from server"
+;                :how-often    "Every 10 seconds"
+;                :to-whom uid
+;                :i i}])))
+;       (recur (inc i))))
 ;
 ; ; Note that this'll be fast+reliable even over Ajax!:
 ; (defn test-fast-server>User-pushes []
@@ -114,4 +117,4 @@
   (debugf "Event: %s" event)
   (event-msg-handler ev-msg))
 
-(start-broadcaster!)
+; (start-broadcaster!)

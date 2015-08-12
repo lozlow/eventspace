@@ -13,5 +13,6 @@
    :sente (new-channel-sockets event-msg-handler* sente-web-server-adapter)])
 
 (defsystem prod-system
-  [:sente (new-channel-sockets event-msg-handler* sente-web-server-adapter
+  [:web (new-web-server (Integer. (env :http-port)) my-ring-handler)
+   :sente (new-channel-sockets event-msg-handler* sente-web-server-adapter
                                {:packer (sente-transit/get-flexi-packer :edn)})])

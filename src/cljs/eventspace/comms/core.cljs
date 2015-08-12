@@ -26,11 +26,6 @@
     (def chsk-send! send-fn) ; ChannelSocket's send API fn
     (def chsk-state state)))   ; Watchable, read-only atom
 
-(defn event-msg-handler*
-  [{:as ev-msg :keys [id ?data event]}]
-  (debugf "Event: %s" event)
-  (event-msg-handler ev-msg))
-
 (defmulti event-msg-handler :id)
 
 (defmethod event-msg-handler :default ; Fallback
@@ -52,6 +47,11 @@
   (let [[?uid ?csrf-token ?handshake-data] ?data]
     (debugf "Handshake: %s" ?data)))
 
+(defn event-msg-handler*
+  [{:as ev-msg :keys [id ?data event]}]
+  (debugf "Event: %s" event)
+  (event-msg-handler ev-msg))
+
 (defn stop-router!
   []
   (when-let [stop-f @router]
@@ -66,5 +66,3 @@
   []
   (connect!)
   (start-router!))
-
-(start!)

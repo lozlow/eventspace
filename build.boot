@@ -1,10 +1,10 @@
 (set-env!
   :target-path "target"
-  :resource-paths #{"resources/public"}
-  :source-paths #{"src/clj" "src/cljs" "resources/sass" "resources/templates"}
+  :resource-paths #{"resources"}
+  :source-paths #{"src/clj" "src/cljs" "resources/templates"}
   :dependencies '[[org.clojure/clojure "1.7.0"]
                   [org.clojure/clojurescript "1.7.48"]
-                  [adzerk/boot-cljs "0.0-3308-0" :scope "test"]
+                  [adzerk/boot-cljs "1.7.48-SNAPSHOT"]
                   [adzerk/boot-cljs-repl "0.1.9" :scope "test"]
                   [adzerk/boot-reload "0.3.1" :scope "test"]
                   [pandeiro/boot-http "0.6.3-SNAPSHOT" :scope "test"]
@@ -26,7 +26,8 @@
                   [com.cognitect/transit-clj "0.8.275"]
                   [com.cognitect/transit-cljs "0.8.220"]
                   [com.taoensso/encore "2.4.2"]
-                  [cheshire "5.4.0"]])
+                  [cheshire "5.4.0"]
+                  [selmer "0.8.8"]])
 
 (require
   '[adzerk.boot-cljs :refer [cljs]]
@@ -41,11 +42,10 @@
 
 (deftask build-assets []
   (comp (cljs)
-        (sass :output-dir "css")))
+        (sass :output-dir "public/css")))
 
 (deftask build []
-  (comp (serve :dir "target")
-        (environ :env {:http-port 3019})
+  (comp (environ :env {:http-port 3019})
         (repl :server true)
         (cljs-repl)
         (watch)
@@ -55,12 +55,12 @@
               (build-assets))))
 
 (deftask production []
-  (set-env! :source-paths #(conj % "env/prod/cljs"))
+  (set-env! :source-paths #(conj % "env/prod/cljs" "env/prod/clj"))
   (task-options! cljs {:optimizations :advanced
                        ;; pseudo-names true is currently required
                        ;; https://github.com/martinklepsch/pseudo-names-error
                        ;; hopefully fixed soon
-                       :pseudo-names true
+                      ;  :pseudo-names true
                        :compiler-options {:output-to "js/app.js"
                                           :main "eventspace.prod" ;:asset-path "js/out"
                                           }}
@@ -86,3 +86,11 @@
   []
   (comp (development)
         (build)))
+
+(deftask release
+  []
+  (comp (production)
+        (build-assets)
+        (uber)
+        (aot :namespace '#{eventspace.prod eventspace.systems eventspace.core})
+        (jar :main 'eventspace.prod)))
