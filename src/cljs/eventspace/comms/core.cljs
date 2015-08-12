@@ -1,22 +1,17 @@
 (ns eventspace.comms.core
- (:require
-   [clojure.string  :as str]
-   [cljs.core.async :as async  :refer (<! >! put! chan)]
-   [taoensso.encore :as enc    :refer (tracef debugf infof warnf errorf)]
-   [taoensso.sente  :as sente  :refer (cb-success?)]
-   ;; Optional, for Transit encoding:
-   [taoensso.sente.packers.transit :as sente-transit])
- (:require-macros
-   [cljs.core.async.macros :as asyncm :refer (go go-loop)]))
-
-;;;; Logging config
+  (:require [clojure.string :as str]
+            [cljs.core.async :as async :refer (<! >! put! chan)]
+            [taoensso.encore :as enc :refer (tracef debugf infof warnf errorf)]
+            [taoensso.sente :as sente :refer (cb-success?)]
+            [taoensso.sente.packers.transit :as sente-transit])
+  (:require-macros [cljs.core.async.macros :as asyncm :refer (go go-loop)]))
 
 ;; (sente/set-logging-level! :trace) ; Uncomment for more logging
 
 ; (def packer (sente-transit/get-flexi-packer :edn))
-(def packer :edn) ; Default packer (no need for Transit dep)
+(def packer :edn)
 
-(debugf "ClojureScript appears to have loaded correctly.")
+(def router (atom nil))
 
 (declare chsk)
 (declare ch-chsk)
@@ -26,18 +21,17 @@
 (defn connect!
   []
   (let [{:keys [chsk ch-recv send-fn state]} (sente/make-channel-socket! "/chsk" {:type :auto})]
-      (def chsk chsk)
-      (def ch-chsk ch-recv) ; ChannelSocket's receive channel
-      (def chsk-send! send-fn) ; ChannelSocket's send API fn
-      (def chsk-state state)))   ; Watchable, read-only atom
+    (def chsk chsk)
+    (def ch-chsk ch-recv) ; ChannelSocket's receive channel
+    (def chsk-send! send-fn) ; ChannelSocket's send API fn
+    (def chsk-state state)))   ; Watchable, read-only atom
 
-;;;; Routing handlers
-
-(defmulti event-msg-handler :id) ; Dispatch on event-id
-    ;; Wrap for logging, catching, etc.:
-(defn event-msg-handler* [{:as ev-msg :keys [id ?data event]}]
+(defn event-msg-handler*
+  [{:as ev-msg :keys [id ?data event]}]
   (debugf "Event: %s" event)
   (event-msg-handler ev-msg))
+
+(defmulti event-msg-handler :id)
 
 (defmethod event-msg-handler :default ; Fallback
   [{:as ev-msg :keys [event]}]
@@ -58,13 +52,18 @@
   (let [[?uid ?csrf-token ?handshake-data] ?data]
     (debugf "Handshake: %s" ?data)))
 
-(def router_ (atom nil))
-(defn stop-router! [] (when-let [stop-f @router_] (stop-f)))
-(defn start-router! []
-  (stop-router!)
-  (reset! router_ (sente/start-chsk-router! ch-chsk event-msg-handler*)))
+(defn stop-router!
+  []
+  (when-let [stop-f @router]
+    (stop-f)))
 
-(defn start! []
+(defn start-router!
+  []
+  (stop-router!)
+  (reset! router (sente/start-chsk-router! ch-chsk event-msg-handler*)))
+
+(defn start!
+  []
   (connect!)
   (start-router!))
 

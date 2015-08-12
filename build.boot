@@ -23,7 +23,6 @@
                   [ring "1.4.0-RC1"]
                   [ring/ring-defaults "0.1.5"] ; Includes `ring-anti-forgery`, etc.
                   [compojure "1.3.4"] ; Or routing lib of your choice
-                  [com.datomic/datomic-pro "0.9.5206"]
                   [com.cognitect/transit-clj "0.8.275"]
                   [com.cognitect/transit-cljs "0.8.220"]
                   [com.taoensso/encore "2.4.2"]

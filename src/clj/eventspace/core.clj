@@ -35,7 +35,7 @@
   ;   (if (:uid (:session req))
   ;     (do (println "Logged in as" (:uid (:session req))) ((:ring-ajax-get-or-ws-handshake (:sente system)) req))
   ;     {:status 401})))
-  (POST "/chsk"  req ((:ring-ajax-post (:sente system)) req))
+  (POST "/chsk" req ((:ring-ajax-post (:sente system)) req))
   (POST "/login" req (login! req))
   (route/not-found "<h1>Page not found</h1>"))
 
@@ -56,28 +56,29 @@
     ;; `ring.middleware.defaults/wrap-defaults` - but you'll need to ensure
     ;; that they're included yourself if you're not using `wrap-defaults`.
     ;;
-    (-> my-routes
-        (wrap-defaults ring-defaults-config)
-        (wrap-session {:cookie-attrs {:max-age 3600}
-                       :store (cookie-store {:key "ahY9poQuaghahc7I"})})
-         wrap-index)))
+    (wrap-defaults my-routes ring-defaults-config)))
+    ;(-> (wrap-defaults my-routes ring-defaults-config)
+    ;     wrap-index)))
 
 ; ;;;; Example: broadcast server>user
 ;
 ; ;; As an example of push notifications, we'll setup a server loop to broadcast
 ; ;; an event to _all_ possible user-ids every 10 seconds:
-; (defn start-broadcaster! []
-;     (go-loop [i 0]
-;       (<! (async/timeout 10000))
-;       (println (format "Broadcasting server>user: %s" @(:connected-uids (:sente system))))
-;       (doseq [uid (:any @(:connected-uids (:sente system)))]
-;         (chsk-send! uid
-;          [:some/broadcast
-;           {:what-is-this "A broadcast pushed from server"
-;            :how-often    "Every 10 seconds"
-;            :to-whom uid
-;            :i i}]))
-;       (recur (inc i))))
+(defn start-broadcaster!
+  []
+  (println "Starting broadcaster")
+    (go-loop [i 0]
+      (<! (async/timeout 10000))
+      (let [chsk-send! (:chsk-send! (:sente system))]
+        (println (format "Broadcasting server>user: %s" @(:connected-uids (:sente system))))
+        (doseq [uid (:any @(:connected-uids (:sente system)))]
+          (chsk-send! uid
+            [:some/broadcast
+              {:what-is-this "A broadcast pushed from server"
+               :how-often    "Every 10 seconds"
+               :to-whom uid
+               :i i}])))
+      (recur (inc i))))
 ;
 ; ; Note that this'll be fast+reliable even over Ajax!:
 ; (defn test-fast-server>User-pushes []
@@ -87,11 +88,7 @@
 
 ;;;; Routing handlers
 
-(defmulti event-msg-handler :id) ; Dispatch on event-id
-  ;; Wrap for logging, catching, etc.:
-  (defn     event-msg-handler* [{:as ev-msg :keys [id ?data event]}]
-   (debugf "Event: %s" event)
-   (event-msg-handler ev-msg))
+(defmulti event-msg-handler :id)
 
 (defmethod event-msg-handler :default ; Fallback
   [{:as ev-msg :keys [event id ?data ring-req ?reply-fn send-fn]}]
@@ -111,3 +108,10 @@
 (defmethod event-msg-handler :chsk/uidport-open
   [{:as ev-msg :keys [event id ?data ring-req ?reply-fn send-fn]}]
   (println "connected"))
+
+(defn event-msg-handler*
+  [{:as ev-msg :keys [id ?data event]}]
+  (debugf "Event: %s" event)
+  (event-msg-handler ev-msg))
+
+(start-broadcaster!)
