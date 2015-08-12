@@ -4,7 +4,7 @@
   :source-paths #{"src/clj" "src/cljs" "resources/templates"}
   :dependencies '[[org.clojure/clojure "1.7.0"]
                   [org.clojure/clojurescript "1.7.48"]
-                  [adzerk/boot-cljs "1.7.48-SNAPSHOT"]
+                  [adzerk/boot-cljs "0.0-3308-0"]
                   [adzerk/boot-cljs-repl "0.1.9" :scope "test"]
                   [adzerk/boot-reload "0.3.1" :scope "test"]
                   [pandeiro/boot-http "0.6.3-SNAPSHOT" :scope "test"]
@@ -57,14 +57,8 @@
 (deftask production []
   (set-env! :source-paths #(conj % "env/prod/cljs" "env/prod/clj"))
   (task-options! cljs {:optimizations :advanced
-                       ;; pseudo-names true is currently required
-                       ;; https://github.com/martinklepsch/pseudo-names-error
-                       ;; hopefully fixed soon
-                      ;  :pseudo-names true
-                       :compiler-options {:output-to "js/app.js"
-                                          :main "eventspace.prod" ;:asset-path "js/out"
-                                          }}
-                      sass   {:output-style "compressed"})
+                       :compiler-options {:output-to "js/app.js"}}
+                 sass   {:output-style "compressed"})
   identity)
 
 (deftask development []

@@ -3,4 +3,6 @@
 
 (enable-console-print!)
 
-(core/init!)
+(defn ^:export init
+  []
+  (core/init!))

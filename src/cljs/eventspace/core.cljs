@@ -7,8 +7,6 @@
             [eventspace.subscriptions.core]
             [eventspace.handlers.core]))
 
-(enable-console-print!)
-
 (defn render-main
   []
   (let [space (subscribe [:selected-space])]
@@ -23,6 +21,6 @@
   (reagent/render-component [menu/render-menu] (.getElementById js/document "menu"))
   (reagent/render-component [render-main] (.getElementById js/document "app")))
 
-(defn ^:export init! []
+(defn init! []
   (dispatch-sync [:initialise-database])
   (mount-components))

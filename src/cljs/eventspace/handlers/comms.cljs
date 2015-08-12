@@ -10,7 +10,7 @@
     (sente/ajax-call "/login"
       {:method :post
        :params {:user-id (str user)
-                :csrf-token (.-csrfToken js/eventspace)}}
+                :csrf-token (aget js/context "csrfToken")}}
       (fn [response]
         (debugf "Ajax login response: %s" response)
         (let [login-successful? (:success? response)]
