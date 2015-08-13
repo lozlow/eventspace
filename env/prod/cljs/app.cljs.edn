@@ -1,2 +1,0 @@
-{:require  [eventspace.prod]
- :init-fns [eventspace.prod/init]}

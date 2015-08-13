@@ -4,7 +4,7 @@
   :source-paths #{"src/clj" "src/cljs" "resources/templates"}
   :dependencies '[[org.clojure/clojure "1.7.0"]
                   [org.clojure/clojurescript "1.7.48"]
-                  [adzerk/boot-cljs "0.0-3308-0"]
+                  [adzerk/boot-cljs "1.7.48-SNAPSHOT"]
                   [adzerk/boot-cljs-repl "0.1.9" :scope "test"]
                   [adzerk/boot-reload "0.3.1" :scope "test"]
                   [pandeiro/boot-http "0.6.3-SNAPSHOT" :scope "test"]
@@ -26,6 +26,7 @@
                   [com.cognitect/transit-clj "0.8.275"]
                   [com.cognitect/transit-cljs "0.8.220"]
                   [com.taoensso/encore "2.4.2"]
+                  [tailrecursion/clojure-adapter-servlet "0.2.1"]
                   [cheshire "5.4.0"]
                   [selmer "0.8.8"]])
 
@@ -55,21 +56,18 @@
               (build-assets))))
 
 (deftask production []
-  (set-env! :source-paths #(conj % "env/prod/cljs" "env/prod/clj"))
-  (task-options! cljs {:optimizations :advanced
-                       :id "app"}
-                       ;:compiler-options {:output-to "js/app.js"}}
-                 sass   {:output-style "compressed"})
+  (set-env! :source-paths #(conj % "env/prod/cljs" "env/prod/clj")
+            :resource-paths #(conj % "env/prod"))
+  (task-options! cljs {:optimizations :advanced}
+                 sass {:output-style "compressed"})
   identity)
 
 (deftask development []
-  (set-env! :source-paths #(conj % "env/dev/cljs"))
+  (set-env! :source-paths #(conj % "env/dev/cljs")
+            :resource-paths #(conj % "env/dev"))
   (task-options! cljs {:optimizations :none
-                       :id "app"}
-                      ;  :unified-mode true
                       ;  :source-map true
-                      ;  :compiler-options {:output-to "js/app.js"
-                      ;                     :output-dir "out"
+                       :compiler-options {:asset-path "js/app.out"}}
                       ;                     :main "eventspace.dev"
                       ;                     :asset-path "js/out"}}
                  reload {:on-jsload 'eventspace.core/init!}
@@ -90,3 +88,11 @@
         (uber)
         (aot :namespace '#{eventspace.prod eventspace.systems eventspace.core})
         (jar :main 'eventspace.prod)))
+
+(deftask release-war
+  []
+  (comp (production)
+        (build-assets)
+        (uber)
+        (aot :namespace '#{eventspace.prod eventspace.systems eventspace.core})
+        (war)))

@@ -1,2 +1,0 @@
-{:require  [eventspace.dev]
- :init-fns [eventspace.dev/init]}

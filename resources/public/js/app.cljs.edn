@@ -1,2 +1,0 @@
-{:require  [eventspace.core]
- :init-fns [eventspace.core/init!]}
