@@ -57,19 +57,21 @@
 (deftask production []
   (set-env! :source-paths #(conj % "env/prod/cljs" "env/prod/clj"))
   (task-options! cljs {:optimizations :advanced
-                       :compiler-options {:output-to "js/app.js"}}
+                       :id "app"}
+                       ;:compiler-options {:output-to "js/app.js"}}
                  sass   {:output-style "compressed"})
   identity)
 
 (deftask development []
   (set-env! :source-paths #(conj % "env/dev/cljs"))
   (task-options! cljs {:optimizations :none
-                       :unified-mode true
-                       :source-map true
-                       :compiler-options {:output-to "js/app.js"
-                                          :output-dir "out"
-                                          :main "eventspace.dev"
-                                          :asset-path "js/out"}}
+                       :id "app"}
+                      ;  :unified-mode true
+                      ;  :source-map true
+                      ;  :compiler-options {:output-to "js/app.js"
+                      ;                     :output-dir "out"
+                      ;                     :main "eventspace.dev"
+                      ;                     :asset-path "js/out"}}
                  reload {:on-jsload 'eventspace.core/init!}
                  sass   {:line-numbers true
                          :source-maps  true})
