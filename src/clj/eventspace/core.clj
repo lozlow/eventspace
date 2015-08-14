@@ -15,6 +15,7 @@
             [org.httpkit.server :as http-kit]
             [reloaded.repl :refer [system]]
             [cheshire.core :refer :all]
+            [ring.middleware.gzip :refer [wrap-gzip]]
             [selmer.parser :as parser]))
 
 ; (sente/set-logging-level! :trace) ; Uncomment for more logging
@@ -61,7 +62,9 @@
     ;; `ring.middleware.defaults/wrap-defaults` - but you'll need to ensure
     ;; that they're included yourself if you're not using `wrap-defaults`.
     ;;
-    (wrap-defaults my-routes ring-defaults-config)))
+    (-> my-routes
+      (wrap-defaults ring-defaults-config)
+      (wrap-gzip))))
 
 ; ;;;; Example: broadcast server>user
 ;

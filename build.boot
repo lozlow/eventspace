@@ -28,7 +28,8 @@
                   [com.taoensso/encore "2.4.2"]
                   [tailrecursion/clojure-adapter-servlet "0.2.1"]
                   [cheshire "5.4.0"]
-                  [selmer "0.8.8"]])
+                  [selmer "0.8.8"]
+                  [amalloy/ring-gzip-middleware "0.1.3"]])
 
 (require
   '[adzerk.boot-cljs :refer [cljs]]
@@ -88,11 +89,3 @@
         (uber)
         (aot :namespace '#{eventspace.prod eventspace.systems eventspace.core})
         (jar :main 'eventspace.prod)))
-
-(deftask release-war
-  []
-  (comp (production)
-        (build-assets)
-        (uber)
-        (aot :namespace '#{eventspace.prod eventspace.systems eventspace.core})
-        (war)))
