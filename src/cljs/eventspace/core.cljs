@@ -9,8 +9,7 @@
 
 (defn render-main
   []
-  (let [logged-in (subscribe [:logged-in-user])
-        selected-space (subscribe [:selected-space])]
+  (let [logged-in (subscribe [:logged-in-user])]
     (fn []
       (if @logged-in
         [space/render-space]

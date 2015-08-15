@@ -8,20 +8,21 @@
     (reaction (:spaces @db))))
 
 (register-sub
-  :selected-space
+  :selected-space-id
   (fn [db _]
-    (let [id (reaction (:selected-space @db))
-          spaces (:spaces @db)]
-      (reaction (->> spaces
-                     (filter #(= (:id %) @id))
+    (reaction (:selected-space @db))))
+
+(register-sub
+  :selected-space
+  (fn [_]
+    (let [selected-id (subscribe [:selected-space-id])
+          spaces (subscribe [:spaces-list])]
+      (reaction (->> @spaces
+                     (filter #(= (:id %) @selected-id))
                      first)))))
 
 (register-sub
   :feed
   (fn [db _]
-    (reaction (:feed @db))))
-;     (let [id (reaction (:selected-space @db))
-;           spaces (:spaces @db)]
-;       (reaction (:feed (->> spaces
-;                            (filter #(= (:id %) @id))
-;                            first))))))
+    (let [selected (subscribe [:selected-space])]
+      (reaction (:feed @selected)))))

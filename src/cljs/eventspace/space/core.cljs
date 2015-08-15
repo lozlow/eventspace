@@ -12,10 +12,8 @@
 
 (defn feed-panel
   []
-  (let [space (subscribe [:selected-space])
-        feed-items (subscribe [:feed])]
+  (let [feed-items (subscribe [:feed])]
     (fn []
-      (println @space)
       (println "feed" @feed-items)
       [:div.FeedPanel
         (for [item @feed-items]
@@ -66,7 +64,6 @@
               {:id "members" :label "Members"}]
         selected (atom (:id (first tabs)))]
     (fn []
-      (println "Space is" @space)
       [space-header (:title @space)
                     (:summary @space)
                     [tabbed-pane :tabs tabs :selected selected :on-change (fn [new] (println "hello" new))]])))
