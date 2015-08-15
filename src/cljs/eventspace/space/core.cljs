@@ -12,8 +12,11 @@
 
 (defn feed-panel
   []
-  (let [feed-items (subscribe [:feed])]
+  (let [space (subscribe [:selected-space])
+        feed-items (subscribe [:feed])]
     (fn []
+      (println @space)
+      (println "feed" @feed-items)
       [:div.FeedPanel
         (for [item @feed-items]
           ^{:key (:id item)} [fi/feed-item item])])))
@@ -63,13 +66,16 @@
               {:id "members" :label "Members"}]
         selected (atom (:id (first tabs)))]
     (fn []
-      [space-header (:title @space) (:summary @space) [tabbed-pane :tabs tabs :selected selected :on-change (fn [new] (println "hello" new))]])))
+      (println "Space is" @space)
+      [space-header (:title @space)
+                    (:summary @space)
+                    [tabbed-pane :tabs tabs :selected selected :on-change (fn [new] (println "hello" new))]])))
 
 (defn render-space
   []
-    [:div
-      ; [loading-panel]
-      [title]
-      [:div.content
-        [create-post]
-        [feed-panel]]])
+  [:div
+    ; [loading-panel]
+    [title]
+    [:div.content
+      [create-post]
+      [feed-panel]]])

@@ -22,7 +22,9 @@
 
 (parser/set-resource-path! (clojure.java.io/resource "templates"))
 
-(def chsk-send! (:chsk-send! (:sente system)))
+(defn chsk-send!
+  [& args]
+  (apply (:chsk-send! (:sente system)) args))
 
 (defn render [template]
   (-> template
@@ -108,12 +110,27 @@
   [{:as ev-msg :keys [event id ?data ring-req ?reply-fn send-fn]}]
   (when-let [uid (:uid (:session ring-req))]
     (debugf "Handled event: %s for user-id %s" event uid)
-    (println chsk-send!)
     (chsk-send! uid [:chsk/ws-pong [:time (System/currentTimeMillis)]])))
 
 (defmethod event-msg-handler :chsk/uidport-open
   [{:as ev-msg :keys [event id ?data ring-req ?reply-fn send-fn]}]
   (println "connected"))
+
+(defmethod event-msg-handler :space/posts
+  [{:as ev-msg :keys [event id ?data ring-req ?reply-fn send-fn]}]
+  (?reply-fn ["Hello"]))
+
+(defmethod event-msg-handler :space/list
+  [{:as ev-msg :keys [event id ?data ring-req ?reply-fn send-fn]}]
+  (?reply-fn [{:title "Cricket" :id 18347125 :summary "Some stuff about Cricket"
+               :feed [{:id 12315 :type :message :author "Sam" :date "20/5/2015 19:12:21" :content "Nam tempor porta turpis, quis vehicula nibh viverra vitae. Aliquam erat volutpat. Nunc ullamcorper tincidunt feugiat. Curabitur sed risus id tortor finibus malesuada. Fusce luctus magna sit amet diam ullamcorper venenatis."
+                       :children []}]}
+              ;  :feed [{:id 12315 :type :message :author "Sam" :date "20/5/2015 19:12:21" :content "Nam tempor porta turpis, quis vehicula nibh viverra vitae. Aliquam erat volutpat. Nunc ullamcorper tincidunt feugiat. Curabitur sed risus id tortor finibus malesuada. Fusce luctus magna sit amet diam ullamcorper venenatis."
+              ;          :children []}
+              ;         {:id 21375 :type :message :author "Chris" :date "17/7/2015 19:12:21" :content "Suspendisse potenti. Duis dictum gravida viverra. Integer luctus tempor massa, id tempor felis consectetur vel. Curabitur ut lacus eu risus mollis aliquam sit amet id nisl. Quisque egestas malesuada dignissim."
+              ;          :children [{:id 21375 :type :message :author "Sam" :date "20/7/2015 19:12:21" :content "Hello"}]}]}
+              {:title "Tennis" :id 18347123 :summary "Some stuff about Tennis"}
+              {:title "Board Games" :id 18341125 :summary "Some stuff about Board Games"}]))
 
 (defn event-msg-handler*
   [{:as ev-msg :keys [id ?data event]}]

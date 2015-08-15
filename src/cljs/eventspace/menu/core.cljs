@@ -13,15 +13,16 @@
       (let [selected-id (:id @selected-space)]
         [:li.pure-menu-item
           [:a.pure-menu-link {:class (when (= selected-id id) "active")
-                              :on-click #(dispatch [:select-space id])} title]]))))
+                              :on-click #(dispatch [:space/select-space id])} title]]))))
 
 (defn spaces-list
   []
   (let [spaces (subscribe [:spaces-list])]
     (fn []
-      [:ul.pure-menu-list
+      [:div
+        [:ul.pure-menu-list
         (for [space @spaces]
-          ^{:key (:id space)} [spaces-item space])])))
+          ^{:key (:id space)} [spaces-item space])]])))
 
 (defn new-space
   []

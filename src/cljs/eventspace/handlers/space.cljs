@@ -3,7 +3,11 @@
             [re-frame.core :refer [dispatch register-handler]]))
 
 (register-handler
-  :select-space
+  :space/select-space
   (fn [db [_ id]]
-    (println "GET" (str "/space/" id "/feed"))
     (assoc-in db [:selected-space] id)))
+
+(register-handler
+  :space/set-space-list
+  (fn [db [_ data]]
+    (assoc-in db [:spaces] data)))

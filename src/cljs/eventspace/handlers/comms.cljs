@@ -23,4 +23,21 @@
   :comms/login-success
   (fn [db]
     (comms/start!)
-    (assoc-in db [:selected-space] (:id (first (:spaces db))))))
+    (add-watch comms/chsk-state :open? (fn [id _ old-state new-state]
+                                         (when (:open? new-state)
+                                           (dispatch [:comms/handshake-success])
+                                           (remove-watch comms/chsk-state :open?))))
+    (assoc-in db [:logged-in] true)))
+
+(register-handler
+  :comms/handshake-success
+  (fn [db]
+    (dispatch [:comms/request-spaces])
+    db))
+
+(register-handler
+  :comms/request-spaces
+  (fn [db [_]]
+    (let [callback (fn [reply] (dispatch [:space/set-space-list reply]))]
+      (comms/chsk-send! [:space/list] 5000 callback)
+      db)))

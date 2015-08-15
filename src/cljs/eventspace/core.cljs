@@ -9,9 +9,10 @@
 
 (defn render-main
   []
-  (let [space (subscribe [:selected-space])]
+  (let [logged-in (subscribe [:logged-in-user])
+        selected-space (subscribe [:selected-space])]
     (fn []
-      (if @space
+      (if @logged-in
         [space/render-space]
         [space/loading-panel]))))
 

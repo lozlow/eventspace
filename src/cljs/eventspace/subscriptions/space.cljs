@@ -20,3 +20,8 @@
   :feed
   (fn [db _]
     (reaction (:feed @db))))
+;     (let [id (reaction (:selected-space @db))
+;           spaces (:spaces @db)]
+;       (reaction (:feed (->> spaces
+;                            (filter #(= (:id %) @id))
+;                            first))))))
