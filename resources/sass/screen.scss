@@ -73,3 +73,11 @@ textarea {
     }
   }
 }
+
+.Button {
+  @include button;
+
+  &--larger {
+    @include button(45px);
+  }
+}

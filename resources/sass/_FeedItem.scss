@@ -31,18 +31,9 @@ $border-colour: #ccc;
     border: 1px solid $border-colour;
     background: transparent;
   }
-
-  &__button {
-    @include button(45px);
-  }
 }
 
 .FeedItemCommentBox {
-  &__new,
-  &__button {
-    @include button;
-  }
-
   &__content {
     width: 100%;
     border: 1px solid $border-colour;

@@ -7,7 +7,8 @@
             [eventspace.space.feed-item :as fi]
             [eventspace.util :refer [with-focus]]
             [goog.dom :as dom]
-            [goog.events :as events])
+            [goog.events :as events]
+            [eventspace.widgets.button :refer [button]])
   (:use [eventspace.widgets.tabbed-pane :only [tabbed-pane]]))
 
 (defn feed-panel
@@ -34,18 +35,18 @@
     (fn []
       [:div.NewPost
         [:div.NewPost__buttons
-          [:button.NewPost__button {:on-click #(reset! creating :message)} "+ Message"]
-          [:button.NewPost__button {:on-click #(reset! creating :event)} "+ Event"]
+          [button :on-click #(reset! creating :message) :label "+ Message" :modifier "--larger"]
+          [button :on-click #(reset! creating :event) :label "+ Event" :modifier "--larger"]
           (when-let [type @creating]
             [:div.NewPost__details
               [new-post type]
-              [:button.NewPost__button.NewPost__button--cancel {:on-click #(reset! creating nil)} "Cancel"]
-              [:button.NewPost__button "Post"]])]])))
+              [button :on-click #(reset! creating nil) :label "Cancel"]
+              [button :label "Post"]])]])))
 
 (defn loading-panel
   []
   [:div.LoadingPanel
-    [:button {:on-click #(dispatch [:comms/login {:user "pete" :password "password"}])} "Login"]
+    [button :on-click #(dispatch [:comms/login {:user "pete" :password "password"}]) :label "Login"]
     [:img.LoadingPanel__spinner {:src "/img/puff.svg"}]])
 
 (deftemplate space-header
