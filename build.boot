@@ -71,7 +71,8 @@
                        :compiler-options {:asset-path "js/app.out"}}
                       ;                     :main "eventspace.dev"
                       ;                     :asset-path "js/out"}}
-                 reload {:on-jsload 'eventspace.core/init!}
+                 reload {:on-jsload 'eventspace.core/init!
+                         :asset-path "public/"}
                  sass   {:line-numbers true
                          :source-maps  true})
   identity)

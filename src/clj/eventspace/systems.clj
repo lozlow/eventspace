@@ -10,7 +10,7 @@
 
 (defsystem dev-system
   [:web (new-web-server (Integer. (env :http-port)) my-ring-handler)
-   :sente (new-channel-sockets event-msg-handler* sente-web-server-adapter {:handshake-data-fn (fn [ring-req] "pete")})])
+   :sente (new-channel-sockets event-msg-handler* sente-web-server-adapter {:handshake-data-fn (fn [req] (get-in req [:session :user-email]))})])
 
 (defsystem prod-system
   [:web (new-web-server (Integer. (env :http-port)) my-ring-handler)

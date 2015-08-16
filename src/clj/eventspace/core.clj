@@ -16,7 +16,8 @@
             [reloaded.repl :refer [system]]
             [cheshire.core :refer :all]
             [ring.middleware.gzip :refer [wrap-gzip]]
-            [selmer.parser :as parser]))
+            [selmer.parser :as parser]
+            [environ.core :refer [env]]))
 
 ; (sente/set-logging-level! :trace) ; Uncomment for more logging
 
@@ -40,7 +41,7 @@
   (let [{:keys [session params]} ring-request
         {:keys [user-id]} params]
     (debugf "Login request: %s" params)
-    {:status 200 :session (assoc session :uid user-id)}))
+    {:status 200 :session (assoc session :uid user-id :user-email (env :user-email))}))
 
 (defroutes my-routes
   (GET "/" [] (render "index.html"))

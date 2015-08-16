@@ -3,7 +3,8 @@
             [cljs.core.async :as async :refer (<! >! put! chan)]
             [taoensso.encore :as enc :refer (tracef debugf infof warnf errorf)]
             [taoensso.sente :as sente :refer (cb-success?)]
-            [taoensso.sente.packers.transit :as sente-transit])
+            [taoensso.sente.packers.transit :as sente-transit]
+            [re-frame.core :refer [dispatch]])
   (:require-macros [cljs.core.async.macros :as asyncm :refer (go go-loop)]))
 
 ;; (sente/set-logging-level! :trace) ; Uncomment for more logging
@@ -45,6 +46,7 @@
 (defmethod event-msg-handler :chsk/handshake
   [{:as ev-msg :keys [?data]}]
   (let [[?uid ?csrf-token ?handshake-data] ?data]
+    (dispatch [:comms/handshake-success [?uid ?handshake-data]])
     (debugf "Handshake: %s" ?data)))
 
 (defn event-msg-handler*

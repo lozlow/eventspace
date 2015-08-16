@@ -23,17 +23,13 @@
   :comms/login-success
   (fn [db]
     (comms/start!)
-    (add-watch comms/chsk-state :open? (fn [id _ old-state new-state]
-                                         (when (:open? new-state)
-                                           (dispatch [:comms/handshake-success])
-                                           (remove-watch comms/chsk-state :open?))))
-    (assoc-in db [:logged-in] true)))
+    db))
 
 (register-handler
   :comms/handshake-success
-  (fn [db]
+  (fn [db [_ [uid email]]]
     (dispatch [:comms/request-spaces])
-    db))
+    (assoc-in db [:logged-in] {:user-id uid :email email})))
 
 (register-handler
   :comms/request-spaces

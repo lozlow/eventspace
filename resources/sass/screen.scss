@@ -81,3 +81,14 @@ textarea {
     @include button(45px);
   }
 }
+
+.UserPanel {
+  color: $accent-1;
+
+  &__profile-image {
+    vertical-align: middle;
+    margin-right: 10px;
+    margin-left: 4px;
+    @include rounded(16px);
+  }
+}

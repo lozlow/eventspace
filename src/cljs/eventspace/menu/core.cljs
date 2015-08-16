@@ -1,6 +1,8 @@
 (ns eventspace.menu.core
   (:require-macros [reagent.ratom :refer [reaction]])
-  (:require [re-frame.core :refer [subscribe dispatch]]))
+  (:require [re-frame.core :refer [subscribe dispatch]]
+            [eventspace.util :refer [gravatar-url]]
+            [clojure.string :refer [capitalize]]))
 
 (defn header
   []
@@ -30,9 +32,20 @@
             (println "Create space"))]
     [:a.pure-menu-link {:on-click clickfn} "Create space"]))
 
+(defn user-panel
+  []
+  (let [user (subscribe [:logged-in-user])]
+    (fn []
+      (when @user
+        [:div.UserPanel
+          [:p
+            [:img.UserPanel__profile-image {:src (gravatar-url (:email @user) :size 32)}]
+            [:span (str "Logged in as " (capitalize (:user-id @user)))]]]))))
+
 (defn render-menu
   []
   [:div.pure-menu
     [header]
     [spaces-list]
-    [new-space]])
+    [new-space]
+    [user-panel]])
