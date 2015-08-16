@@ -14,7 +14,6 @@
   []
   (let [feed-items (subscribe [:feed])]
     (fn []
-      (println "feed" @feed-items)
       [:div.FeedPanel
         (for [item @feed-items]
           ^{:key (:id item)} [fi/feed-item item])])))

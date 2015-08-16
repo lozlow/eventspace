@@ -1,6 +1,6 @@
 (ns eventspace.handlers.space
   (:require [eventspace.handlers.comms]
-            [re-frame.core :refer [dispatch register-handler debug]]))
+            [re-frame.core :refer [dispatch register-handler]]))
 
 (register-handler
   :space/select-space
@@ -10,6 +10,5 @@
 
 (register-handler
   :space/set-space-list
-  debug
   (fn [db [_ data]]
     (assoc-in db [:spaces] data)))
