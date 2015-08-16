@@ -38,9 +38,8 @@
     (fn []
       (when @user
         [:div.UserPanel
-          [:p
-            [:img.UserPanel__profile-image {:src (gravatar-url (:email @user) :size 32)}]
-            [:span (str "Logged in as " (capitalize (:user-id @user)))]]]))))
+          [:img.UserPanel__profile-image {:src (gravatar-url (:email @user) :size 32)}]
+          [:span (str "Logged in as " (capitalize (:user-id @user)))]]))))
 
 (defn render-menu
   []

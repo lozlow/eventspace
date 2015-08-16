@@ -41,6 +41,7 @@
   (let [{:keys [session params]} ring-request
         {:keys [user-id]} params]
     (debugf "Login request: %s" params)
+    (debugf "User-email %s" (env :user-email))
     {:status 200 :session (assoc session :uid user-id :user-email (env :user-email))}))
 
 (defroutes my-routes
