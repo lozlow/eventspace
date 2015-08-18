@@ -1,7 +1,7 @@
 (set-env!
   :target-path "target"
   :resource-paths #{"resources"}
-  :source-paths #{"src/clj" "src/cljs" "resources/templates"}
+  :source-paths #{"src/clj" "src/cljc" "src/cljs" "resources/templates"}
   :dependencies '[[org.clojure/clojure "1.7.0"]
                   [org.clojure/clojurescript "1.7.48"]
                   [adzerk/boot-cljs "1.7.48-SNAPSHOT"]
@@ -48,7 +48,7 @@
 
 (deftask build []
   (comp (environ :env {:http-port 3019})
-        (repl :server true)
+        ; (repl :server true)
         (cljs-repl)
         (watch)
         (system :sys #'dev-system :auto-start true :hot-reload true :files ["core.clj"])
@@ -72,7 +72,7 @@
                       ;                     :main "eventspace.dev"
                       ;                     :asset-path "js/out"}}
                  reload {:on-jsload 'eventspace.core/init!
-                         :asset-path "public/"}
+                         :asset-path "public"}
                  sass   {:line-numbers true
                          :source-maps  true})
   identity)

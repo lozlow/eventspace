@@ -3,7 +3,8 @@
   (:require [reagent.core :refer [atom]]
             [re-frame.core :refer [subscribe dispatch]]
             [eventspace.util :refer [with-focus gravatar-url]]
-            [eventspace.widgets.button :refer [button]]))
+            [eventspace.widgets.button :refer [button]]
+            [eventspace.widgets.button-strip :refer [button-strip]]))
 
 (defmulti feed-item-content :type)
 
@@ -20,8 +21,7 @@
           [button :on-click #(reset! entering true) :label "Comment"]
           [:div
             [with-focus [:textarea.FeedItemCommentBox__content {:tab-index 1}]]
-            [button :on-click #(reset! entering false) :label "Cancel"]
-            [button :attributes {:tab-index 2} :label "Post"]])])))
+            [button-strip [{:on-click #(reset! entering false) :label "Cancel"} {:attributes {:tab-index 2} :label "Post"}]]])])))
 
 (defn feed-item-comment
   [{:keys [author date content] :as comment}]

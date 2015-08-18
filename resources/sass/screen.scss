@@ -74,6 +74,17 @@ textarea {
   }
 }
 
+.ButtonStrip {
+  button:first-of-type {
+    @include border-radius(0, 0, 4px, 4px);
+  }
+
+  button:last-of-type {
+    @include border-radius(4px, 4px, 0, 0);
+  }
+}
+
+
 .Button {
   @include button;
 
