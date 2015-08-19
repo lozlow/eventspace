@@ -6,7 +6,8 @@
                 ;{:title "Tennis" :id 18347123 :summary "Some stuff about Tennis"}
                 ;{:title "Board Games" :id 18341125 :summary "Some stuff about Board Games"}]
      :selected-space nil
-     :logged-in false})
+     :logged-in false
+     :modal :login})
 
 (register-handler
   :initialise-database

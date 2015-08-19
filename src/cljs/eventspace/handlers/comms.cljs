@@ -17,12 +17,20 @@
           (if-not login-successful?
             (dispatch [:comms/login-failed])
             (dispatch [:comms/login-success])))))
+    (dispatch [:modal/set-modal :loading])
     db))
 
 (register-handler
   :comms/login-success
   (fn [db]
+    (dispatch [:modal/set-modal nil])
     (comms/start!)
+    db))
+
+(register-handler
+  :comms/login-failed
+  (fn [db]
+    (dispatch [:modal/set-modal :login])
     db))
 
 (register-handler

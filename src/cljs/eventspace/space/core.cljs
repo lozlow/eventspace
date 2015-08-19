@@ -44,12 +44,6 @@
               [new-post type]
               [button-strip [{:on-click #(reset! creating nil) :label "Cancel"} {:label "Post"}]]])]])))
 
-(defn loading-panel
-  []
-  [:div.LoadingPanel
-    [button :on-click #(dispatch [:comms/login {:user "pete" :password "password"}]) :label "Login"]
-    [:img.LoadingPanel__spinner {:src "/img/puff.svg"}]])
-
 (deftemplate space-header
   "space-header.html"
   [title summary tab-pane]
@@ -72,7 +66,6 @@
 (defn render-space
   []
   [:div
-    ; [loading-panel]
     [title]
     [:div.content
       [create-post]

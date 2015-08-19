@@ -1,6 +1,6 @@
 (ns eventspace.subscriptions.space
   (:require-macros [reagent.ratom :refer [reaction]])
-  (:require [re-frame.core :refer [subscribe dispatch register-sub]]))
+  (:require [re-frame.core :refer [subscribe register-sub]]))
 
 (register-sub
   :space/spaces-list

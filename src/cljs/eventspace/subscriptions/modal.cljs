@@ -1,8 +1,8 @@
-(ns eventspace.subscriptions.user
+(ns eventspace.subscriptions.modal
   (:require-macros [reagent.ratom :refer [reaction]])
   (:require [re-frame.core :refer [subscribe register-sub]]))
 
 (register-sub
-  :user/logged-in-user
+  :modal/modal-showing
   (fn [db _]
-    (reaction (:logged-in @db))))
+    (reaction (:modal @db))))

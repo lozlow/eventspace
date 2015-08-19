@@ -4,6 +4,7 @@
             [eventspace.menu.core :as menu]
             [eventspace.space.core :as space]
             [eventspace.dashboard.core :as dashboard]
+            [eventspace.modal.core :as modal]
             [eventspace.database]
             [eventspace.subscriptions.core]
             [eventspace.handlers.core]))
@@ -11,13 +12,14 @@
 (defn render-main
   []
   (let [logged-in (subscribe [:user/logged-in-user])
-        selected-space-id (subscribe [:space/selected-space-id])]
+        selected-space-id (subscribe [:space/selected-space-id])
+        modal-showing (subscribe [:modal/modal-showing])]
     (fn []
       (if @logged-in
         (if @selected-space-id
           [space/render-space]
           [dashboard/render-dashboard])
-        [space/loading-panel]))))
+        [modal/render-modal @modal-showing]))))
 
 ;; -------------------------
 ;; Initialize app
