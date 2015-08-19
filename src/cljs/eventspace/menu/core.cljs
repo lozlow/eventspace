@@ -50,9 +50,11 @@
 
 (defn render-menu
   []
-  [:div.pure-menu
-    [header]
-    [dashboard-link]
-    [spaces-list]
-    [new-space]
-    [user-panel]])
+  (let [logged-in (subscribe [:user/logged-in-user])]
+    (fn []
+      [:div.pure-menu
+        [header]
+        (when @logged-in [dashboard-link])
+        (when @logged-in [spaces-list])
+        (when @logged-in [new-space])
+        (when @logged-in [user-panel])])))

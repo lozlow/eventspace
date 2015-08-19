@@ -11,8 +11,7 @@
 
 (defn render-main
   []
-  (let [logged-in (subscribe [:user/logged-in-user])
-        selected-space-id (subscribe [:space/selected-space-id])
+  (let [selected-space-id (subscribe [:space/selected-space-id])
         modal-showing (subscribe [:modal/modal-showing])]
     (fn []
       (if-not @modal-showing
