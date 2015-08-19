@@ -3,16 +3,20 @@
             [re-frame.core :refer [subscribe dispatch-sync]]
             [eventspace.menu.core :as menu]
             [eventspace.space.core :as space]
+            [eventspace.dashboard.core :as dashboard]
             [eventspace.database]
             [eventspace.subscriptions.core]
             [eventspace.handlers.core]))
 
 (defn render-main
   []
-  (let [logged-in (subscribe [:logged-in-user])]
+  (let [logged-in (subscribe [:user/logged-in-user])
+        selected-space-id (subscribe [:space/selected-space-id])]
     (fn []
       (if @logged-in
-        [space/render-space]
+        (if @selected-space-id
+          [space/render-space]
+          [dashboard/render-dashboard])
         [space/loading-panel]))))
 
 ;; -------------------------

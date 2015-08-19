@@ -14,7 +14,7 @@
 
 (defn feed-panel
   []
-  (let [feed-items (subscribe [:feed])]
+  (let [feed-items (subscribe [:space/feed])]
     (fn []
       [:div.FeedPanel
         (for [item @feed-items]
@@ -36,7 +36,9 @@
     (fn []
       [:div.NewPost
         [:div.NewPost__buttons
-          [button-strip [{:on-click #(reset! creating :message) :label "+ Message" :modifier "--larger"} {:on-click #(reset! creating :event) :label "+ Event" :modifier "--larger"}]]
+          [button-strip [{:on-click #(reset! creating :message) :label "+ Message" :modifier "--larger"}
+                         {:on-click #(reset! creating :event) :label "+ Event" :modifier "--larger"}
+                         {:label "+ Something Else" :modifier "--larger"}]]
           (when-let [type @creating]
             [:div.NewPost__details
               [new-post type]
@@ -57,7 +59,7 @@
 
 (defn title
   []
-  (let [space (subscribe [:selected-space])
+  (let [space (subscribe [:space/selected-space])
         tabs [{:id "feed" :label "Feed"}
               {:id "events" :label "Events"}
               {:id "members" :label "Members"}]

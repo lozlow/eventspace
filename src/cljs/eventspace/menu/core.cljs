@@ -10,31 +10,38 @@
 
 (defn spaces-item
   [{:keys [id title]}]
-  (let [selected-space (subscribe [:selected-space])]
+  (let [selected-space-id (subscribe [:space/selected-space-id])]
     (fn [{:keys [id title]}]
-      (let [selected-id (:id @selected-space)]
-        [:li.pure-menu-item
-          [:a.pure-menu-link {:class (when (= selected-id id) "active")
-                              :on-click #(dispatch [:space/select-space id])} title]]))))
+      [:li.pure-menu-item
+        [:a.pure-menu-link {:class (when (= @selected-space-id id) "active")
+                            :on-click #(dispatch [:space/select-space id])} title]])))
 
 (defn spaces-list
   []
-  (let [spaces (subscribe [:spaces-list])]
+  (let [spaces (subscribe [:space/spaces-list])]
     (fn []
       [:div
         [:ul.pure-menu-list
         (for [space @spaces]
           ^{:key (:id space)} [spaces-item space])]])))
 
+(defn dashboard-link
+  []
+  (let [selected-space-id (subscribe [:space/selected-space-id])
+        click-fn (fn []
+                   (dispatch [:space/select-space nil]))]
+    (fn []
+      [:a.pure-menu-link {:class (when (= @selected-space-id nil) "active") :on-click click-fn} "Home"])))
+
 (defn new-space
   []
-  (letfn [(clickfn []
+  (letfn [(click-fn []
             (println "Create space"))]
-    [:a.pure-menu-link {:on-click clickfn} "Create space"]))
+    [:a.pure-menu-link {:on-click click-fn} "Create space"]))
 
 (defn user-panel
   []
-  (let [user (subscribe [:logged-in-user])]
+  (let [user (subscribe [:user/logged-in-user])]
     (fn []
       (when @user
         [:div.UserPanel
@@ -45,6 +52,7 @@
   []
   [:div.pure-menu
     [header]
+    [dashboard-link]
     [spaces-list]
     [new-space]
     [user-panel]])

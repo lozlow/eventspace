@@ -106,3 +106,7 @@ textarea {
     @include rounded(16px);
   }
 }
+
+.Dashboard {
+    @include content-column;
+}

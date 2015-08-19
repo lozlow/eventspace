@@ -3,6 +3,6 @@
   (:require [re-frame.core :refer [subscribe dispatch register-sub]]))
 
 (register-sub
-  :logged-in-user
+  :user/logged-in-user
   (fn [db _]
     (reaction (:logged-in @db))))
