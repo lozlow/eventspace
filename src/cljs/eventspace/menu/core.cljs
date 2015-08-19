@@ -36,7 +36,7 @@
 (defn new-space
   []
   (letfn [(click-fn []
-            (println "Create space"))]
+            (dispatch [:modal/set-modal :create-space]))]
     [:a.pure-menu-link {:on-click click-fn} "Create space"]))
 
 (defn user-panel

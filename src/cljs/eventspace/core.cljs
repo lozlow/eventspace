@@ -15,7 +15,7 @@
         selected-space-id (subscribe [:space/selected-space-id])
         modal-showing (subscribe [:modal/modal-showing])]
     (fn []
-      (if @logged-in
+      (if-not @modal-showing
         (if @selected-space-id
           [space/render-space]
           [dashboard/render-dashboard])
